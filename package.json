@@ -1,0 +1,21 @@
+{
+  "name": "web-component",
+  "version": "1.0.0",
+  "description": "basic web component set-up",
+  "main": "index.js",
+  "author": "T0",
+  "license": "MIT",
+  "dependencies": {
+    "@polymer/polymer": "^2.0.1",
+    "axios": "^0.16.2"
+  },
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^1.0.0",
+    "web-component-tester": "^6.0.0",
+    "minimist": "^1.2.0"
+  },
+  "scripts": {
+    "test": "test",
+    "serve": "node scripts/npm-run-dispatcher.js serve"
+  }
+}

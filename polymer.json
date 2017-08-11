@@ -1,0 +1,12 @@
+{
+  "lint": {
+    "rules": [
+      "polymer-2-hybrid"
+    ]
+  },
+  "entrypoint": "index.html",
+  "sources": [
+    "src/**/*"
+  ]
+
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>web-component demo</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+
+    <!-- <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html"> -->
+
+    <link rel="import" href="../src/html/web-component.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <style>
+      [showWhenConnected] {
+        opacity: 0;
+      }
+    </style>
+
+    <web-component showWhenConnected>
+      <span slot="title">Title text</span>
+      <span slot="subject">Subject text</span>
+      <span slot="spanning">Spanning text</span>
+    </web-component>
+
+    <script>
+        window.addEventListener('WebComponentsReady', function (e) {
+            // imports are loaded and elements have been registered
+            console.log('Components are ready');
+        });
+    </script>
+
+  </body>
+</html>
