@@ -50,6 +50,7 @@
         text-transform: uppercase;
       }
       */
+
     </style>
 
     slots:
@@ -88,7 +89,7 @@
 
       connectedCallback() {
         super.connectedCallback();
-        this.removeAttribute("showWhenConnected");
+        this.removeAttribute("showComponentWhenConnected");
 
         axios.get('#')
           .then(function (response) {

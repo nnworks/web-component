@@ -1,0 +1,10 @@
+{
+  "srcs": [
+    "./src/html",
+    "./src/scss"
+  ],
+  "targets": [
+    "./src/processedHTML",
+    "./src/css"
+  ]
+}

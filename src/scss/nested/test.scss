@@ -1,0 +1,13 @@
+@function color-shift($color, $amount: 10%) {
+  @return if(lightness($color) > 50%,
+          darken($color, $amount),
+          lighten($color, $amount))
+}
+
+$my-bg-color: #333;
+$my-fg-color: #c00;
+
+.shifted {
+  background-color: color-shift($my-bg-color);
+  color: color-shift($my-fg-color);
+}
