@@ -1,29 +1,28 @@
 #!/usr/bin/env node
 
-var version = "1.0.0";
-var minimist = require("minimist");
-var sass = require("./sass-transpiler.js");
+var Sass = require("./sass-transpiler");
+var parser = require("./cl-parser").parser;
+var cleaner = require("./clean");
 
-var unknownHandler = function(option) {
-    console.log("Unknown parameter: " + option);
+
+var args = parser.parseArgs(process.argv.slice(2));
+
+console.dir(args);
+
+
+if (args.command == "preprocess") {
+  console.log(Sass.sassInfo);
+
+  Sass.processHtmlInline();
+  Sass.processSCSSFiles();
 }
 
-var minimistOpts = {
-    default: {opt1: "value1", opt2: "value2", opt3: false},
-    alias:   {
-        1: "opt1",
-        2: "opt2",
-        3: "opt3"
-    },
-    string:  ["opt1", "opt2"],
-    boolean: ["opt3"],
-    unknown: unknownHandler
+if (args.command == "clean") {
+  cleaner.clean();
 }
 
-var argv = minimist(process.argv.slice(2), minimistOpts);
 
-sass.processInline();
 
-console.log(argv);
+
 
 

@@ -1,4 +1,0 @@
-{
-  "src": ["./src/html"],
-  "targets": ["./src/processedHTML"]
-}
