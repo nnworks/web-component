@@ -1,4 +1,19 @@
-<link rel="import" href="../../node_modules/@polymer/polymer/polymer-element.html">
+<link rel="import" href="../../node_modules/@polymer/polymer/polymer-element.html"/>
+
+
+<style lang="scss">
+  .shifted {
+    background-color: red;
+    color: green;
+  }
+</style>
+
+<style lang="scss">
+  .shifted {
+    background-color: red;
+    color: green;
+  }
+</style>
 
 <script src="../../node_modules/axios/dist/axios.js"></script>
 
@@ -55,13 +70,16 @@
 
     slots:
     <p>
-      title: <slot name="title"></slot>
+      title:
+      <slot name="title"></slot>
     </p>
     <p>
-      subject: <slot name="subject"></slot>
+      subject:
+      <slot name="subject"></slot>
     </p>
     <div class="spanningClass">
-      spanning: <slot name="spanning"/>
+      spanning:
+      <slot name="spanning"/>
     </div>
   </template>
 

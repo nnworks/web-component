@@ -1,10 +1,26 @@
 {
+  "sass": {
+    "scss": {
+      "source": {"base": "./src/scss", "glob": "**/*.scss"},
+      "target": "./src/css"
+    },
+    "inline": {
+      "source": {"base": "./src/html", "glob": "**/*.html"},
+      "target": "./build/html"
+    }
+  },
+
   "srcs": [
-    "./src/html",
-    "./src/scss"
+    ["./src/html", "**/*.html"],
+    ["./src/scss", "**/*.scss"],
+    ["./src/css", "**/.css"]
   ],
+
   "targets": [
-    "./src/processedHTML",
-    "./src/css"
+    "./build/html",
+    "./src/css",
+    "./build/css"
   ]
+
+
 }

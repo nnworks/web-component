@@ -12,6 +12,8 @@
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^1.0.0",
     "argparse": "^1.0.9",
+    "cheerio": "^1.0.0-rc.2",
+    "glob": "^7.1.2",
     "node-sass": "^4.5.3",
     "walker": "^1.0.7",
     "web-component-tester": "^6.0.0"
