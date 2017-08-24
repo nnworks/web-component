@@ -2,7 +2,7 @@
 
 var Sass = require("./sass-transpiler");
 var parser = require("./cl-parser").parser;
-var cleaner = require("./clean");
+var cleaner = require("./cleaner");
 
 
 var args = parser.parseArgs(process.argv.slice(2));
@@ -11,18 +11,27 @@ console.dir(args);
 
 
 if (args.command == "preprocess") {
-  console.log(Sass.sassInfo);
+  preProcess();
+}
 
-  Sass.processHtmlInline();
-  Sass.processSCSSFiles();
+if (args.command == "build") {
+  build();
 }
 
 if (args.command == "clean") {
-  cleaner.clean();
+  clean();
 }
 
 
+function preProcess() {
+  Sass.processSCSSFiles();
+}
 
+function build() {
+  Sass.processSCSSFiles();
+  Sass.processHtmlInline();
+}
 
-
-
+function clean() {
+  Sass.clean();
+}
