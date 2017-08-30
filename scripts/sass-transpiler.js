@@ -4,7 +4,6 @@ var sass = require("node-sass");
 var walker = require("walker");
 var cheerio = require("cheerio");
 var fileUtils = require("./fileutils");
-var cleaner = require("./cleaner");
 
 var config = require("../config/buildconfig.json");
 
@@ -85,20 +84,26 @@ function writeFile(outFile, fileStat, data) {
 }
 
 function clean() {
-  // SCSS products
+  var removeFiles = [];
+
+  // remove SCSS products
   var scssBase = config.sass.scss.source.base;
   var targetBase = config.sass.scss.target;
   var files = fileUtils.getSrcFiles(scssBase, config.sass.scss.source.glob);
-  var removeFiles = [];
-  files.forEach(function(file, index) {
+  files.forEach(function (file) {
     var targetFile = file.fileName.substr(0, file.fileName.lastIndexOf(".")) + CSS_FILEEXTENSION;
-    removeFiles[index] = path.join(targetBase, targetFile);
+    removeFiles[removeFiles.length] = path.join(targetBase, targetFile);
   });
 
-  cleaner.clean(removeFiles);
+  // remove inline compile products
+  var htmlBase = config.sass.inline.source.base;
+  var targetBase = config.sass.inline.target;
+  var files = fileUtils.getSrcFiles(htmlBase, config.sass.inline.source.glob);
+  files.forEach(function (file) {
+    removeFiles[removeFiles.length] = path.join(targetBase, file.fileName);
+  });
 
-  // Inline files will not be removed, they are part of the build folder which should be completely removed
-
+  fileUtils.removeList(removeFiles, true);
 }
 
 module.exports = {
@@ -107,4 +112,3 @@ module.exports = {
   clean: clean,
   sassInfo: sass.info,
 };
-

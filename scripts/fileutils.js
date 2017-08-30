@@ -36,10 +36,71 @@ function createPath(filePath) {
       }
     }
   });
-
 }
+
+function removePathIfEmpty(pathToRemove) {
+  var curPath = path.normalize(pathToRemove);
+  while (true) {
+    if (fs.existsSync(curPath)) {
+      // is it empty?
+      if (fs.readdirSync(curPath).length == 0) {
+        fs.rmdirSync(curPath);
+      }
+    }
+
+
+    if (curPath.lastIndexOf(path.sep) == -1) {
+      break;
+    }
+
+    // strip last part of path curPath
+    curPath = curPath.substr(0, curPath.lastIndexOf(path.sep));
+  }
+}
+
+/**
+ * Removes directory (after recursively removing its content)
+ * @param dirPath directory to remove
+ */
+function emptyFolder(dirPath) {
+  // empty folder recursively
+  fs.readdirSync(dirPath).forEach(function (file) {
+    var curPath = path.join(targetPath, file);
+    if (fs.lstatSync(curPath).isDirectory()) { // recurse
+      emptyFolder(curPath);
+      fs.rmdirSync(curPath);
+    } else {
+      fs.unlinkSync(curPath);
+    }
+  });
+}
+
+/**
+ * Removes all files / folders in targets array
+ *
+ * @param targets array with files / directories to remove
+ * @param removeEmptyDirectories boolean: remove empty directories on the path (default: false)
+ */
+function removeList(targets, removeEmptyDirectories = false) {
+  targets.forEach(function (targetPath) {
+    if (fs.existsSync(targetPath)) {
+      if (fs.lstatSync(targetPath).isDirectory()) {
+        emptyFolder(targetPath);
+      } else {
+        fs.unlinkSync(targetPath);
+      }
+    }
+
+    if (removeEmptyDirectories) {
+      removePathIfEmpty(targetPath);
+    }
+  });
+
+};
+
 
 module.exports = {
   getSrcFiles: getSrcFiles,
   createPath: createPath,
+  removeList: removeList
 }
