@@ -2,7 +2,6 @@
 
 var Sass = require("./sass-transpiler");
 var parser = require("./cl-parser").parser;
-var cleaner = require("./cleaner");
 
 
 var args = parser.parseArgs(process.argv.slice(2));
