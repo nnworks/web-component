@@ -19,8 +19,10 @@
     "web-component-tester": "^6.0.0"
   },
   "scripts": {
-    "help": "node scripts/npm-run-dispatcher.js help",
     "build": "node scripts/npm-run-dispatcher.js build",
+    "clean": "node scripts/npm-run-dispatcher.js clean",
+    "help": "node scripts/npm-run-dispatcher.js --help",
+    "preprocess": "node scripts/npm-run-dispatcher.js preprocess",
     "test": "test"
   }
 }
