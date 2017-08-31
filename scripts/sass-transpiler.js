@@ -15,72 +15,77 @@ var SCSS_STYLE_ELM = "style[lang='scss']";
 
 var processHtmlInline = function () {
   var base = config.sass.inline.source.base;
-  var files = fileUtils.getSrcFiles(base, config.sass.inline.source.glob);
+  var files = fileUtils.getFiles(base, config.sass.inline.source.glob);
   files.forEach(function(file, index) {
     if (path.extname(file.fileName) == PROCESSINLINE_FILEEXTENSION) {
-      processInlineInFile(file.fileName, base, config.sass.inline.target, file.stat);
+      processInlineInFile(base, file.fileName, config.sass.inline.target, file.stat);
     }
   });
 };
 
 var processSCSSFiles = function () {
   var base = config.sass.scss.source.base;
-  var files = fileUtils.getSrcFiles(base, config.sass.scss.source.glob);
+  var files = fileUtils.getFiles(base, config.sass.scss.source.glob);
   files.forEach(function(file, index) {
     if (path.extname(file.fileName) == SCSS_FILEEXTENSION) {
-      processSCSS(file.fileName, config.sass.scss.source.base, config.sass.scss.target, file.stat);
+      processSCSS(config.sass.scss.source.base, file.fileName, config.sass.scss.target, file.stat);
     }
   });
 };
 
-function processInlineInFile(file, src, target, fileStat) {
-  console.log("processing: " + file + " and write result into " + path.join(target, file));
+/**
+ * Process the inline scss tag in the given file
+ * @param file
+ * @param base
+ * @param target
+ * @param fileStat stat fo the source file, used for mode of the resulting file
+ */
+function processInlineInFile(base, file, target, fileStat) {
+  var srcFile = path.join(base, file);
+  var targetFile = path.join(target, file);
 
-  fs.readFile(path.join(src, file), 'utf8', function (error, data) {
-    var htmlDom = cheerio.load(data);
-    var scssElements = htmlDom(SCSS_STYLE_ELM);
+  if (fileUtils.isFileChanged(srcFile, targetFile)) {
+    fs.readFile(srcFile, 'utf8', function (error, data) {
+      var htmlDom = cheerio.load(data);
+      var scssElements = htmlDom(SCSS_STYLE_ELM);
 
-    if (scssElements) {
-      scssElements.each(function(i, element) {
-        var scss = htmlDom(element).html();
-        if (scss) {
-          compiledScss = sass.renderSync({
-            data: scss.toString(),
-            outputStyle: "compressed",
-            includePaths: config.srcs,
-          });
+      if (scssElements) {
+        scssElements.each(function(i, element) {
+          var scss = htmlDom(element).html();
+          if (scss) {
+            compiledScss = sass.renderSync({
+              data: scss.toString(),
+              outputStyle: "compressed",
+              includePaths: config.srcs,
+            });
 
-          htmlDom(element).text(compiledScss.css.toString()).removeAttr("lang");
-        }
-      });
-    }
+            htmlDom(element).text(compiledScss.css.toString()).removeAttr("lang");
+          }
+        });
+      }
 
-    writeFile(this.outFile, this.fileStat, htmlDom.html());
+      fileUtils.writeFile(htmlDom.html(), this.outFile, this.fileStat);
 
-  }.bind({outFile: path.join(target, file), fileStat: fileStat}));
+    }.bind({outFile: path.join(target, file), fileStat: fileStat}));
+  }
 }
 
-function processSCSS(file, src, target, fileStat) {
-  var targetFile = file.substr(0, file.lastIndexOf(".")) + CSS_FILEEXTENSION;
-  var outFile = path.join(target, targetFile);
+function processSCSS(base, file, target, fileStat) {
+  var srcFile = path.join(base, file);
+  var outFile = file.substr(0, file.lastIndexOf(".")) + CSS_FILEEXTENSION;
+  var targetFile = path.join(target, outFile);
 
-  console.log("processing: " + file + " and write result into " + outFile);
-
-  sass.render({
-    file: path.join(src, file),
-    //outFile: outFile,
-  }, function (error, result) {
-    if (!error) {
-      writeFile(this.outFile, this.fileStat, result.css);
-    } else {
-      console.log(error);
-    }
-  }.bind({outFile: outFile, fileStat: fileStat}));
-}
-
-function writeFile(outFile, fileStat, data) {
-  fileUtils.createPath(path.dirname(outFile));
-  fs.writeFile(outFile, data, {mode: fileStat.mode});
+  if (fileUtils.isFileChanged(srcFile, targetFile)) {
+    sass.render({
+      file: path.join(base, file),
+    }, function (error, result) {
+      if (!error) {
+        fileUtils.writeFile(result.css, this.outFile, this.fileStat);
+      } else {
+        console.log(error);
+      }
+    }.bind({outFile: targetFile, fileStat: fileStat}));
+  }
 }
 
 function clean() {
@@ -89,7 +94,7 @@ function clean() {
   // remove SCSS products
   var scssBase = config.sass.scss.source.base;
   var targetBase = config.sass.scss.target;
-  var files = fileUtils.getSrcFiles(scssBase, config.sass.scss.source.glob);
+  var files = fileUtils.getFiles(scssBase, config.sass.scss.source.glob);
   files.forEach(function (file) {
     var targetFile = file.fileName.substr(0, file.fileName.lastIndexOf(".")) + CSS_FILEEXTENSION;
     removeFiles[removeFiles.length] = path.join(targetBase, targetFile);
@@ -98,7 +103,7 @@ function clean() {
   // remove inline compile products
   var htmlBase = config.sass.inline.source.base;
   var targetBase = config.sass.inline.target;
-  var files = fileUtils.getSrcFiles(htmlBase, config.sass.inline.source.glob);
+  var files = fileUtils.getFiles(htmlBase, config.sass.inline.source.glob);
   files.forEach(function (file) {
     removeFiles[removeFiles.length] = path.join(targetBase, file.fileName);
   });

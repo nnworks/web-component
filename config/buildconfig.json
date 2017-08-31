@@ -5,20 +5,18 @@
       "target": "./src/css"
     },
     "inline": {
-      "source": {"base": "./src/html", "glob": "**/*.html"},
+      "source": {"base": "./build/html", "glob": "**/*.html"},
       "target": "./build/html"
     }
   },
 
   "srcs": [
     ["./src/html", "**/*.html"],
-    ["./src/scss", "**/*.scss"],
-    ["./src/css", "**/.css"]
+    ["./src/css", "**/*.css"]
   ],
 
   "targets": [
     "./build/html",
-    "./src/css",
     "./build/css"
   ]
 

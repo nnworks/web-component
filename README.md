@@ -14,3 +14,8 @@ When building to release/build folder:
 - scss styles in html into inline css (.html files from html/ to .html in
 - modifying path on build (relative to other node_modules)
 - babel transpiling
+
+
+yarn run preprocess
+yarn run build
+yarn run clean

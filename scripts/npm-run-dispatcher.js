@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
-var Sass = require("./sass-transpiler");
+var sass = require("./sass-transpiler");
+var copier = require("./copier");
 var parser = require("./cl-parser").parser;
 
 
 var args = parser.parseArgs(process.argv.slice(2));
-
-console.dir(args);
 
 
 if (args.command == "preprocess") {
@@ -23,14 +22,16 @@ if (args.command == "clean") {
 
 
 function preProcess() {
-  Sass.processSCSSFiles();
+  sass.processSCSSFiles();
 }
 
 function build() {
-  Sass.processSCSSFiles();
-  Sass.processHtmlInline();
+  sass.processSCSSFiles();
+  copier.copySrcsToTargets();
+  sass.processHtmlInline();
 }
 
 function clean() {
-  Sass.clean();
+  copier.clean();
+  sass.clean();
 }
