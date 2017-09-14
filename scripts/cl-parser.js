@@ -42,6 +42,12 @@ var subParsers = parser.addSubparsers({
   dest: "command",
 });
 
+var cleanParser = subParsers.addParser("dev-install", {
+  addHelp: true,
+  help: "install additional development tools etc."
+});
+
+
 var cleanParser = subParsers.addParser("clean", {
   addHelp: true,
   help: "clean the build and preprocess folders"
