@@ -16,13 +16,14 @@
     "glob": "^7.1.2",
     "node-sass": "^4.5.3",
     "walker": "^1.0.7",
-    "web-component-tester": "^6.0.0"
+    "web-component-tester": "^6.1.5"
   },
   "scripts": {
+    "dev-install": "node scripts/npm-run-dispatcher.js dev-install",
     "build": "node scripts/npm-run-dispatcher.js build",
     "clean": "node scripts/npm-run-dispatcher.js clean",
     "help": "node scripts/npm-run-dispatcher.js --help",
     "preprocess": "node scripts/npm-run-dispatcher.js preprocess",
-    "test": "test"
+    "unittest": "node_modules/.bin/wct"
   }
 }

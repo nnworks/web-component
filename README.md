@@ -16,6 +16,9 @@ When building to release/build folder:
 - babel transpiling
 
 
-yarn run preprocess
-yarn run build
-yarn run clean
+yarn dev-install (doing nothing yet)
+yarn preprocess
+yarn build
+yarn clean
+
+

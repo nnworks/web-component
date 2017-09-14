@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 
+var devInstall = require("./dev-install");
 var sass = require("./sass-transpiler");
-var copier = require("./copier");
+var copier = require("./buildfilemanager");
 var parser = require("./cl-parser").parser;
 
 
 var args = parser.parseArgs(process.argv.slice(2));
 
+
+if (args.command == "dev-install") {
+  clean();
+}
 
 if (args.command == "preprocess") {
   preProcess();
