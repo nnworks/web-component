@@ -6,24 +6,23 @@
 
     <title>web-component test</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../web-component.html">
+    <link rel="import" href="../src/html/web-component.html">
   </head>
   <body>
 
     <test-fixture id="BasicTestFixture">
       <template>
-        <web-component></web-component>
+        <web-component>
+          <span slot="title">Title text</span>
+          <span slot="subject">Subject text</span>
+          <span slot="spanning">Spanning text</span>
+        </web-component>
       </template>
     </test-fixture>
 
-    <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <web-component prop1="new-prop1"></web-component>
-      </template>
-    </test-fixture>
 
     <script>
       suite('web-component', function() {
@@ -32,18 +31,9 @@
           var element = fixture('BasicTestFixture');
           assert.equal(element.prop1, 'web-component');
           var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello web-component!');
+          var elementHeader = elementShadowRoot.querySelector('p');
         });
 
-        test('setting a property on the element works', function() {
-          // Create a test fixture
-          var element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
-        });
 
       });
     </script>
