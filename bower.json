@@ -15,5 +15,8 @@
   ],
   "dependencies": {
     "polymer": "^2.1.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "^6.2.0"
   }
 }
