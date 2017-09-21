@@ -80,7 +80,7 @@ function processSCSS(base, file, target, fileStat) {
       file: path.join(base, file),
     }, function (error, result) {
       if (!error) {
-        fileUtils.writeFile(result.css, this.outFile, this.fileStat);
+        fileUtils.writeFile(result.css, this.outFile, this.fileStat, true);
       } else {
         console.log(error);
       }

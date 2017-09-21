@@ -68,8 +68,8 @@ function copyFile(srcFile, targetFile, syncTimeStamp = false) {
     fs.futimesSync(fOut, stat.atime, stat.mtime);
   }
 
-  fs.close(fIn);
-  fs.close(fOut);
+  fs.close(fIn, err => {});
+  fs.close(fOut, err => {});
 }
 
 /**
@@ -80,11 +80,21 @@ function copyFile(srcFile, targetFile, syncTimeStamp = false) {
  */
 function writeFile(buffer, targetFile, stat, syncTime) {
   createPath(path.dirname(targetFile));
-  fs.writeFile(targetFile, buffer, {mode: stat.mode});
+  fs.writeFile(targetFile, buffer, {mode: stat.mode}, err => {
+    if (err) {
+      console.log(err);
+      return;
+    }
 
-  if (syncTime) {
-    fs.utimesSync(targetFile, stat.atime.getTime(), stat.mtime.getTime());
-  }
+    if (syncTime) {
+      fs.utimes(targetFile, stat.atime.getTime(), stat.mtime.getTime(), err => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+  });
+
 }
 
 function resolveGlob(glob) {
@@ -92,7 +102,7 @@ function resolveGlob(glob) {
   var files = [];
 
   founds.forEach(function(file, index) {
-    var stat = fs.statSync(file);
+    var stat = fs.statSync(file)
     files[index] = {"fileName": file, "stat": stat};
   });
 

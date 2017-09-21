@@ -25,16 +25,24 @@
 
 
     <script>
-      suite('web-component', function() {
+      suite("web-component", function() {
 
-        test('instantiating the element with default properties works', function() {
-          var element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'web-component');
+        test("Instantiating the element works", function() {
+          var element = fixture("BasicTestFixture");
+          assert.equal(element.tagName, "WEB-COMPONENT");
+          assert.equal(element.elementName, "web-component");
+
           var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('p');
+          // via shadow DOM
+          var slotContent = elementShadowRoot.querySelector("slot[name=\"subject\"]").assignedNodes();
+          console.log(slotContent[0].innerHTML);
+          console.log(slotContent[0].parentElement.tagName);
+
+          // via 'light' DOM
+          slotContent = element.querySelector("span[slot=\"subject\"]");
+          console.log(slotContent.innerHTML);
+          console.log(slotContent.parentElement.tagName);
         });
-
-
       });
     </script>
 
