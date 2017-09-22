@@ -1,4 +1,4 @@
-var config = {
+const config = {
   suites: ["test/**/*"],
   plugins: {
     local: {
@@ -7,7 +7,7 @@ var config = {
   },
   webserver: {
     pathMappings: [
-      {'/tja': '/'},
+      {'/components': '/tjah'},
     ],
     verbose: true
   },

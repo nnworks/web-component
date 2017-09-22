@@ -8,13 +8,6 @@
   }
 </style>
 
-<style lang="scss">
-  .shifted {
-    background-color: red;
-    color: green;
-  }
-</style>
-
 <script src="../../node_modules/axios/dist/axios.js"></script>
 
 <dom-module id="web-component">
@@ -68,6 +61,8 @@
 
     </style>
 
+    <h3>{{elementName}}</h3>
+
     slots:
     <p>
       title:
@@ -81,6 +76,13 @@
       spanning:
       <slot name="spanning"/>
     </div>
+
+    <input type="text"  value="{{component.componentName}}" name="component.name">
+    <p>two way binding with non polymer element (oninput event):</p>
+    <input type="text"  value="{{component.counter::input}}" name="component.counter1">
+    <p>one way model to host with non polymer element:</p>
+    <input type="text"  value="[[component.counter]]" name="component.counter2">
+
   </template>
 
   <script>
@@ -96,14 +98,16 @@
         return 'web-component';
       }
 
-      static get properties() {
-        return {
-          elementName: {
-            type: String,
-            value: 'web-component'
-          }
-        };
-      }
+
+      constructor() {
+        super();
+
+        this.elementName = 'web-component'
+        this.component = {
+          componentName: "StockComponent",
+          counter: 1
+        }
+      };
 
       connectedCallback() {
         super.connectedCallback();
@@ -116,6 +120,13 @@
           .catch(function (error) {
             console.log(error);
           });
+
+        window.setInterval(() => {
+          this.component.counter++;
+          this.notifyPath('component.counter')
+
+          console.log(this.component.counter);
+        }, 1000)
 
       }
 
