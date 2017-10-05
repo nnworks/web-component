@@ -1,7 +1,6 @@
 let fs = require("fs");
 let path = require("path");
 let sass = require("node-sass");
-let walker = require("walker");
 let cheerio = require("cheerio");
 let fileUtils = require("./fileutils");
 

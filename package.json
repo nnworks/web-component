@@ -14,11 +14,16 @@
     "cheerio": "^1.0.0-rc.2",
     "glob": "^7.1.2",
     "node-sass": "^4.5.3",
-    "walker": "^1.0.7"
+    "copy-webpack-plugin": "latest",
+    "html-webpack-plugin": "latest",
+    "babel-loader": "latest",
+    "polymer-webpack-loader": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
   },
   "scripts": {
+    "build": "webpack",
     "dev-install": "node scripts/npm-run-dispatcher.js dev-install",
-    "build": "node scripts/npm-run-dispatcher.js build",
     "clean": "node scripts/npm-run-dispatcher.js clean",
     "help": "node scripts/npm-run-dispatcher.js --help",
     "preprocess": "node scripts/npm-run-dispatcher.js preprocess",

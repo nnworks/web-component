@@ -1,4 +1,4 @@
-<link rel="import" href="../../../polymer/polymer-element.html"/>
+<link rel="import" href="../../bower_components/polymer/polymer-element.html"/>
 
 
 <style lang="scss">
@@ -7,8 +7,6 @@
     color: green;
   }
 </style>
-
-<script src="../../node_modules/axios/dist/axios.js"></script>
 
 <dom-module id="web-component">
   <template>
@@ -113,15 +111,9 @@
         super.connectedCallback();
         this.removeAttribute("showComponentWhenConnected");
 
-        axios.get('#')
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        getCurrent();
 
-        window.setInterval(() => {
+        setInterval(() => {
           this.component.counter++;
           this.notifyPath('component.counter')
 

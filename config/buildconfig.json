@@ -5,8 +5,8 @@
       "target": "./src/css"
     },
     "inline": {
-      "source": {"base": "./build/html", "glob": "**/*.html"},
-      "target": "./build/html"
+      "source": {"base": "./dist/html", "glob": "**/*.html"},
+      "target": "./dist/html"
     }
   },
 
@@ -16,9 +16,7 @@
   ],
 
   "targets": [
-    "./build/html",
-    "./build/css"
+    "./dist/html",
+    "./dist/css"
   ]
-
-
 }
