@@ -23,9 +23,9 @@ module.exports = {
       {
         // all html
         test: /\.html$/,
-        // loaders chain/run last to first
+        // loaders chain: run last to first!
         use: [
-          //{loader: 'babel-loader'},
+          {loader: 'babel-loader'},
           {loader: 'polymer-webpack-loader'},
         ],
         //exclude: '',
