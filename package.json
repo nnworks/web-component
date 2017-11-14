@@ -9,6 +9,7 @@
     "axios": "^0.16.2",
     "web-component-tester": "^6.2.0"
   },
+
   "devDependencies": {
     "argparse": "^1.0.9",
     "cheerio": "^1.0.0-rc.2",
@@ -21,6 +22,7 @@
     "webpack": "latest",
     "webpack-dev-server": "latest"
   },
+
   "scripts": {
     "build": "webpack",
     "dev-install": "node scripts/npm-run-dispatcher.js dev-install",
