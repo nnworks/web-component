@@ -2,7 +2,7 @@ const config = {
   suites: ["test/**/*"],
   plugins: {
     local: {
-      browsers: ["firefox"]
+      browsers: ["chrome"]
     }
   },
   webserver: {

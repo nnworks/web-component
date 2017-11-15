@@ -7,45 +7,37 @@
     <title>web-component demo</title>
 
     <!-- Load Custom Elements es5 adapter -->
-    <script src="../bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+    <!--<script src="../bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>-->
     <!-- Load polyfills; note that "loader" will load these async -->
     <script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-      </style>
-    </custom-style>
+    <style>
+      [showComponentWhenConnected] {
+        opacity: 0;
+      }
+    </style>
+
+    <script>
+      (function () {
+        document.addEventListener('WebComponentsReady', function componentsReady() {
+          document.removeEventListener('WebComponentsReady', componentsReady, false);
+
+          var script = document.createElement('script');
+          script.src = '<%= htmlWebpackPlugin.files.js[0] %>';
+          var refScript = document.getElementsByTagName('script')[0];
+          refScript.parentNode.insertBefore(script, refScript);
+        }, false);
+      })();
+    </script>
+
   </head>
   <body>
 
 
-  <script>
-    (function () {
-      document.addEventListener('WebComponentsReady', function componentsReady() {
-
-        // imports are loaded and elements have been registered
-        console.log('Components are ready');
-
-        document.removeEventListener('WebComponentsReady', componentsReady, false);
-        var script = document.createElement('script');
-        script.src = '<%= htmlWebpackPlugin.files.js[0] %>';
-        var refScript = document.getElementsByTagName('script')[0];
-        refScript.parentNode.insertBefore(script, refScript);
-      }, false);
-    })();
-  </script>
-
-
-  <style>
-    [showComponentWhenConnected] {
-      opacity: 0;
-    }
-  </style>
-
   <web-component showComponentWhenConnected>
-    <span slot="title">Title text</span>
-    <span slot="subject">Subject text</span>
-    <span slot="spanning">Spanning text</span>
+    <span slot="title">Title slot text</span>
+    <span slot="subject">Subject slot text</span>
+    <span slot="spanning">Spanning slot text</span>
   </web-component>
 
 
