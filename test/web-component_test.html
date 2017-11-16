@@ -6,8 +6,17 @@
 
     <title>web-component test</title>
 
-    <!-- Load Custom Elements es5 adapter -->
-    <script src="../bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+    <!-- custom elements es5 adapter for browsers that do no support customElements -->
+    <div id="ce-es5-shim">
+      <script type="text/javascript">
+        if (!window.customElements) {
+          var ceShimContainer = document.querySelector('#ce-es5-shim');
+          ceShimContainer.parentElement.removeChild(ceShimContainer);
+        }
+      </script>
+      <script type="text/javascript" src="../bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+    </div>
+
     <!-- Load polyfills; note that "loader" will load these async -->
     <script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
@@ -24,17 +33,17 @@
 
 
           var script = document.createElement('script');
-          script.src = '/dist/web-component.js';
+          script.src = '../dist/web-component.js';
           var refScript = document.getElementsByTagName('script')[0];
           refScript.parentNode.insertBefore(script, refScript);
 
-          startTest();
         }, false);
       })();
     </script>
 
   </head>
   <body>
+
 
     <test-fixture id="BasicTestFixture">
       <template>
@@ -47,30 +56,28 @@
     </test-fixture>
 
     <script>
-      function startTest() {
-        suite("web-component", function() {
+      suite("web-component", function() {
 
-          test("Instantiating the element works", function() {
-            var element = fixture("BasicTestFixture");
+        test("Instantiating the element works", function() {
+          var element = fixture("BasicTestFixture");
 
-            assert.equal(element.tagName, "WEB-COMPONENT");
-            assert.equal(element.localName, "web-component");
+          assert.equal(element.tagName, "WEB-COMPONENT");
+          assert.equal(element.localName, "web-component");
 
 
-            var elementShadowRoot = element.shadowRoot;
-            // via shadow DOM
-            var slotContent = elementShadowRoot.querySelector("slot[name=\"subject\"]").assignedNodes();
-            console.log(slotContent[0].innerHTML);
-            console.log(slotContent[0].parentElement.tagName);
+//          var elementShadowRoot = element.shadowRoot;
+//          // via shadow DOM
+//          var slotContent = elementShadowRoot.querySelector("slot[name=\"subject\"]").assignedNodes();
+//          console.log(slotContent[0].innerHTML);
+//          console.log(slotContent[0].parentElement.tagName);
 
-            // via 'light' DOM
+          // via 'light' DOM
 
-            slotContent = element.querySelector("span[slot=\"subject\"]");
-            console.log(slotContent.innerHTML);
-            console.log(slotContent.parentElement.tagName);
-          });
+          slotContent = element.querySelector("span[slot=\"subject\"]");
+          console.log(slotContent.innerHTML);
+          console.log(slotContent.parentElement.tagName);
         });
-      }
+      });
     </script>
 
   </body>

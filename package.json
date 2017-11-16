@@ -9,7 +9,6 @@
     "axios": "^0.16.2",
     "web-component-tester": "^6.2.0"
   },
-
   "devDependencies": {
     "argparse": "^1.0.9",
     "cheerio": "^1.0.0-rc.2",
@@ -17,12 +16,13 @@
     "node-sass": "^4.5.3",
     "copy-webpack-plugin": "latest",
     "html-webpack-plugin": "latest",
+    "babel-core": "latest",
     "babel-loader": "latest",
+    "babel-preset-env": "latest",
     "polymer-webpack-loader": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest"
   },
-
   "scripts": {
     "build": "webpack",
     "dev-install": "node scripts/npm-run-dispatcher.js dev-install",
