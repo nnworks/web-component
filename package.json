@@ -25,10 +25,11 @@
   },
   "scripts": {
     "build": "webpack",
+    "serve": "webpack-dev-server --open",
     "dev-install": "node scripts/npm-run-dispatcher.js dev-install",
     "clean": "node scripts/npm-run-dispatcher.js clean",
     "help": "node scripts/npm-run-dispatcher.js --help",
     "preprocess": "node scripts/npm-run-dispatcher.js preprocess",
-    "unittest": "node_modules/.bin/wct"
+    "test": "node_modules/.bin/wct"
   }
 }

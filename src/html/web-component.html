@@ -114,6 +114,8 @@
 
         getCurrent();
 
+        console.log(this.shadowRoot);
+
         setInterval(() => {
           this.component.counter++;
           this.notifyPath('component.counter')
@@ -122,12 +124,9 @@
         }, 1000)
 
       }
-
     }
 
     customElements.define(WebComponent.is, WebComponent);
-
-
 
   </script>
 </dom-module>

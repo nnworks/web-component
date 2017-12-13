@@ -31,12 +31,10 @@
           // imports are loaded and elements have been registered
           console.log('Components are ready');
 
-
           var script = document.createElement('script');
           script.src = '../dist/web-component.js';
           var refScript = document.getElementsByTagName('script')[0];
           refScript.parentNode.insertBefore(script, refScript);
-
         }, false);
       })();
     </script>
@@ -44,10 +42,9 @@
   </head>
   <body>
 
-
     <test-fixture id="BasicTestFixture">
       <template>
-        <web-component>
+        <web-component id="BasicTestFixture">
           <span slot="title">Title text</span>
           <span slot="subject">Subject text</span>
           <span slot="spanning">Spanning text</span>
@@ -57,13 +54,16 @@
 
     <script>
       suite("web-component", function() {
+        var element;
+
+        setup(function() {
+          element = fixture("BasicTestFixture");
+        });
 
         test("Instantiating the element works", function() {
-          var element = fixture("BasicTestFixture");
 
           assert.equal(element.tagName, "WEB-COMPONENT");
           assert.equal(element.localName, "web-component");
-
 
 //          var elementShadowRoot = element.shadowRoot;
 //          // via shadow DOM
