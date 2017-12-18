@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TestScriptExec</title>
+
+  <script language="JavaScript" id="scripttag1">
+    console.log("script tag1");
+  </script>
+
+    </head>
+<body>
+
+<script language="JavaScript" src="testscriptexec.js"></script>
+
+<script language="JavaScript" id="scripttag2">
+
+  console.log("script tag2a");
+
+  var scriptTag2 = document.getElementById("scripttag2");
+  addScriptFromSrc(scriptTag2, "console.log(\"dynamically prepended to scripttag2\");");
+
+  console.log("script tag2b");
+
+  var scriptTag1 = document.getElementById("scripttag1");
+  addScriptFromSrc(scriptTag1, "console.log(\"dynamically prepended to scripttag1\");");
+
+  console.log("script tag2c");
+</script>
+
+
+</body>
+</html>

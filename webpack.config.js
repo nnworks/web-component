@@ -60,14 +60,14 @@ module.exports = {
     // This plugin will copy files over for us without transforming them.
     // That's important because the custom-elements-es5-adapter.js MUST
     // remain in ES2015.
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, 'bower_components/webcomponentsjs/*.js'),
-      to: 'bower_components/webcomponentsjs/[name].[ext]'
-    }])
+    new CopyWebpackPlugin([
+      {from: path.resolve(__dirname, 'bower_components/webcomponentsjs/*.js'), to: 'bower_components/webcomponentsjs/[name].[ext]'},
+      {from: path.resolve(__dirname, 'src/js/webcomponents-loader.js'), to: 'src/js/webcomponents-loader.js'}
+      ])
   ],
 
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    contentBase: path.join(__dirname, "./"),
     compress: true,
     port: 9000
   },
