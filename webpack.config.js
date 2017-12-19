@@ -62,7 +62,7 @@ module.exports = {
     // remain in ES2015.
     new CopyWebpackPlugin([
       {from: path.resolve(__dirname, 'bower_components/webcomponentsjs/*.js'), to: 'bower_components/webcomponentsjs/[name].[ext]'},
-      {from: path.resolve(__dirname, 'src/js/webcomponents-loader.js'), to: 'src/js/webcomponents-loader.js'}
+      {from: path.resolve(__dirname, 'src/js/webcomponents-helper.js'), to: 'src/js/webcomponents-helper.js'}
       ])
   ],
 
