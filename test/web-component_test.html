@@ -6,53 +6,15 @@
 
     <title>web-component test</title>
 
-    <!--&lt;!&ndash; custom elements es5 adapter for browsers that do no support customElements &ndash;&gt;-->
-    <!--<div id="ce-es5-shim">-->
-      <!--<script type="text/javascript">-->
-        <!--if (!window.customElements) {-->
-          <!--var ceShimContainer = document.querySelector('#ce-es5-shim');-->
-          <!--ceShimContainer.parentElement.removeChild(ceShimContainer);-->
-        <!--}-->
-      <!--</script>-->
-      <!--<script type="text/javascript" src="../bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>-->
-    <!--</div>-->
+    <!-- loads the bundles needed for the polymer web components -->
+    <script src="../src/js/webcomponents-helper.js" bundles="../dist/web-component.js"></script>
 
-    <!--&lt;!&ndash; Load polyfills; note that "loader" will load these async &ndash;&gt;-->
-    <!--<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>-->
-
-    <script src="../src/js/webcomponents-helper.js" webpack-bundles="../dist/web-component.js"></script>
-
+    <script>
+      window.__wctUseNpm = true;
+    </script>
 
     <!-- tester -->
     <script src="../bower_components/web-component-tester/browser.js"></script>
-
-
-    <!--<script src="../dist/web-component.js"></script>-->
-
-    <!-- load webpack bundle after the web components 'functionality' is ready -->
-
-    <!--<script id="test">-->
-      <!--(function () {-->
-        <!--document.addEventListener('WebComponentsReady', function componentsReady() {-->
-          <!--document.removeEventListener('WebComponentsReady', componentsReady, false);-->
-
-          <!--// imports are loaded and elements have been registered-->
-          <!--console.log('Components are ready');-->
-
-          <!--var script = document.createElement('script');-->
-          <!--script.src = '../dist/web-component.js';-->
-          <!--script.async = false;-->
-          <!--script.onload = function() {-->
-            <!--startTest();-->
-          <!--}-->
-          <!--var refScript = document.getElementById("test");-->
-          <!--refScript.parentNode.insertBefore(script, refScript);-->
-
-          <!--console.log("just before test");-->
-
-        <!--}, false);-->
-      <!--})();-->
-    <!--</script>-->
 
   </head>
   <body>

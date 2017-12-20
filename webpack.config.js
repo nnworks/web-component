@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
   resolve: {
     modules: [
       path.resolve(__dirname, 'node_modules'),
-      path.resolve(__dirname, 'bower_components')
+      //path.resolve(__dirname, 'bower_components')
     ]
   },
 
@@ -35,7 +36,10 @@ module.exports = {
           { loader: 'polymer-webpack-loader' }
         ],
         // Exclude starting point of bundle
-        exclude: /src\/html\/index\.html$/
+        exclude: /src\/html\/index\.html$/,
+        options: {
+          ignoreLinks: [/polymer-element\.html$/]
+        }
       },
       {
         // all files that end in .js
@@ -61,11 +65,18 @@ module.exports = {
     // That's important because the custom-elements-es5-adapter.js MUST
     // remain in ES2015.
     new CopyWebpackPlugin([
-      {from: path.resolve(__dirname, 'bower_components/webcomponentsjs/*.js'), to: 'bower_components/webcomponentsjs/[name].[ext]'},
+      {from: path.resolve(__dirname, 'node_modules/@webcomponents/webcomponentsjs/*.js'), to: 'lib/webcomponentsjs/[name].[ext]'},
       {from: path.resolve(__dirname, 'src/js/webcomponents-helper.js'), to: 'src/js/webcomponents-helper.js'}
-      ])
+      ]),
+
+    // cleaning plugin
+    new CleanWebpackPlugin(["dist"]),
   ],
 
+  externals: {
+    axios: 'axios'
+  }
+,
   devServer: {
     contentBase: path.join(__dirname, "./"),
     compress: true,

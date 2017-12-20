@@ -6,20 +6,23 @@
   "author": "T0",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.16.2",
-    "web-component-tester": "^6.2.0"
+    "axios": "^0.16.2"
   },
   "devDependencies": {
+    "@polymer/polymer": "latest",
+    "@webcomponents/webcomponentsjs": "latest",
     "argparse": "^1.0.9",
-    "cheerio": "^1.0.0-rc.2",
-    "glob": "^7.1.2",
-    "node-sass": "^4.5.3",
-    "copy-webpack-plugin": "latest",
-    "html-webpack-plugin": "latest",
     "babel-core": "latest",
     "babel-loader": "latest",
     "babel-preset-env": "latest",
+    "cheerio": "^1.0.0-rc.2",
+    "clean-webpack-plugin": "latest",
+    "copy-webpack-plugin": "latest",
+    "glob": "^7.1.2",
+    "html-webpack-plugin": "latest",
+    "node-sass": "^4.5.3",
     "polymer-webpack-loader": "latest",
+    "web-component-tester": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest"
   },

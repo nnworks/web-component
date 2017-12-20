@@ -1,6 +1,6 @@
 # \<web-component\>
 
-Basic web component setup.
+Basic web component setup, using webpack
 
 
 
