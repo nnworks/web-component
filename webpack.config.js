@@ -32,14 +32,14 @@ module.exports = {
         // polymer-webpack-loader, and hand the output to
         // babel-loader. This let's us transpile JS in our `<script>` elements.
         use: [
-          { loader: 'babel-loader' },
+          //{ loader: 'babel-loader' },
           { loader: 'polymer-webpack-loader' }
         ],
         // Exclude starting point of bundle
         exclude: /src\/html\/index\.html$/,
-        options: {
-          ignoreLinks: [/polymer-element\.html$/]
-        }
+        // options: {
+        //   ignoreLinks: [/polymer-element\.html$/]
+        // }
       },
       {
         // all files that end in .js
@@ -70,7 +70,7 @@ module.exports = {
       ]),
 
     // cleaning plugin
-    new CleanWebpackPlugin(["dist"]),
+    // new CleanWebpackPlugin(["dist"]),
   ],
 
   externals: {

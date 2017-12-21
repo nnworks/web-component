@@ -29,6 +29,7 @@
       loadCounter++;
       if (bundles.length == loadCounter) {
         document.dispatchEvent(new CustomEvent('WebComponentsReady', {bubbles: true}));
+        console.log("WebComponentsReady emitted");
       }
     }
   }, true);
