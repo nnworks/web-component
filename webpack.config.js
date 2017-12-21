@@ -5,11 +5,15 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 
 module.exports = {
-  entry: './src/html/web-component.html',
+  entry: {
+    "web-component": './src/html/web-component.html',
+    "polymer": './node_modules/@polymer/polymer/polymer-element.html',
+    "axios": './node_modules/axios/lib/axios.js',
+  },
 
   output: {
-    filename: 'web-component.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name]-bundle.js',
   },
 
   resolve: {
@@ -20,8 +24,6 @@ module.exports = {
   },
 
   // These rules tell Webpack how to process different module types.
-  // Remember, *everything* is a module in Webpack. That includes
-  // CSS, and (thanks to our loader) HTML.
   module: {
     rules: [
       {
@@ -32,14 +34,11 @@ module.exports = {
         // polymer-webpack-loader, and hand the output to
         // babel-loader. This let's us transpile JS in our `<script>` elements.
         use: [
-          //{ loader: 'babel-loader' },
+          { loader: 'babel-loader' },
           { loader: 'polymer-webpack-loader' }
         ],
         // Exclude starting point of bundle
         exclude: /src\/html\/index\.html$/,
-        // options: {
-        //   ignoreLinks: [/polymer-element\.html$/]
-        // }
       },
       {
         // all files that end in .js
@@ -75,8 +74,8 @@ module.exports = {
 
   externals: {
     axios: 'axios'
-  }
-,
+  },
+
   devServer: {
     contentBase: path.join(__dirname, "./"),
     compress: true,

@@ -4,11 +4,11 @@
 
   // set ES5 -> ES6 adapter
   if (window.customElements) {
-    addScript(me, "../lib/webcomponentsjs/custom-elements-es5-adapter.js");
+    addScript(me, "lib/webcomponentsjs/custom-elements-es5-adapter.js");
   }
 
   // Load polyfills
-  addScript(me, "../lib/webcomponentsjs/webcomponents-loader.js");
+  addScript(me, "lib/webcomponentsjs/webcomponents-loader.js");
 
   // polyfills are loaded asynchronously, therefore wait for the WebComponentsReady event before proceeding
   document.addEventListener("WebComponentsReady", function componentsReady(event) {
