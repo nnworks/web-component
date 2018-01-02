@@ -2,13 +2,19 @@
   var scripts = document.getElementsByTagName("script");
   var me = scripts[scripts.length - 1];
 
+  // get location of the webcomponentsjs files
+  var webcomponentsLocation = me.getAttribute("wc-location");
+  if (webcomponentsLocation == null) {
+    console.log("wc-location attribute not set");
+  }
+
   // set ES5 -> ES6 adapter
   if (window.customElements) {
-    addScript(me, "lib/webcomponentsjs/custom-elements-es5-adapter.js");
+    addScript(me, webcomponentsLocation + "/custom-elements-es5-adapter.js");
   }
 
   // Load polyfills
-  addScript(me, "lib/webcomponentsjs/webcomponents-loader.js");
+  addScript(me, webcomponentsLocation + "/webcomponents-loader.js");
 
   // polyfills are loaded asynchronously, therefore wait for the WebComponentsReady event before proceeding
   document.addEventListener("WebComponentsReady", function componentsReady(event) {
@@ -18,7 +24,12 @@
     document.removeEventListener("WebComponentsReady", componentsReady, true);
 
     // load all the bundles
-    var bundles = me.getAttribute("bundles").split(",");
+    let bundleAttr = me.getAttribute("bundles");
+    if (bundleAttr == null) {
+      console.log("bundles attribute not set (',' separated bundle files)");
+    }
+
+    var bundles = bundleAttr.split(",");
     for (let index = 0; index < bundles.length; index++) {
       addScript(me, bundles[index], onloadCounter);
     }
@@ -37,7 +48,7 @@
   function addScript(beforeElement, src, onloadCallback = null) {
     var scriptTag = document.createElement("script");
     scriptTag.src = src;
-    scriptTag.async = true;
+    scriptTag.async = false;
     scriptTag.onload = onloadCallback;
     beforeElement.parentElement.insertBefore(scriptTag, beforeElement);
   }
