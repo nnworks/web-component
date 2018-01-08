@@ -1,13 +1,21 @@
+
+<link rel="stylesheet" type="text/css" href="../css/test.css"/>
+
 <style lang="scss">
-  .shifted {
+  .localScss {
     background-color: red;
     color: green;
   }
 </style>
 
+
 <dom-module id="web-component">
   <template>
     <style>
+
+      .localScss {
+        border: 1px solid black;
+      }
 
       @keyframes fade-in {
         0% {
@@ -33,6 +41,12 @@
         }
       }
 
+      h3 {
+        font-family: "Courier";
+        font-size: 12pt;
+        font-style: oblique;
+      }
+
       :host {
         display: block;
         animation: fade-in 100ms linear;
@@ -56,7 +70,9 @@
 
     </style>
 
-    <h3>{{elementName}}</h3>
+    <h3 class="localScss">{{elementName}}</h3>
+
+    <br>
 
     slots:
     <p>
@@ -73,6 +89,7 @@
     </div>
 
     <input type="text"  value="{{component.componentName}}" name="component.name">
+
     <p>two way binding with non polymer element (oninput event):</p>
     <input type="text"  value="{{component.counter::input}}" name="component.counter1">
     <p>one way model to host with non polymer element:</p>

@@ -10,11 +10,14 @@
       [showComponentWhenConnected] {
         opacity: 0;
       }
+
     </style>
 
     <script src="lib/webcomponents-helper-bundle.js" wc-location="lib/webcomponentsjs" bundles="lib/axios-bundle.js, lib/polymer-bundle.js, web-component-bundle.js"></script>
   </head>
   <body>
+
+  <h3 class="localScss">outside component</h3>
 
     <web-component showComponentWhenConnected>
       <span slot="title">Title slot text</span>
