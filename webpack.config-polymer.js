@@ -1,7 +1,5 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-//const BabelPresetEnv = require("@babel/preset-env");
-//const BabelTransformRuntime = require("@babel/plugin-transform-runtime");
 
 module.exports = {
   /** **************************
@@ -33,6 +31,7 @@ module.exports = {
             { loader: "babel-loader",
               options: {
                 presets: ["babel-preset-env"],
+                plugins: ['babel-plugin-transform-runtime'],
                 compact: true // use compact: false to suppress removing whitespaces
               }},
             { loader: "polymer-webpack-loader" }

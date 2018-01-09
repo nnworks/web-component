@@ -33,6 +33,7 @@ module.exports = {
               loader: "babel-loader",
               options: {
                 presets: ["babel-preset-env"],
+                plugins: ['babel-plugin-transform-runtime'],
                 compact: true // use compact: false to suppress removing whitespaces
               }}
           ],

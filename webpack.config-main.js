@@ -1,6 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 
 module.exports = {
@@ -63,7 +62,7 @@ module.exports = {
               loader: "babel-loader",
               options: {
                 presets: ["babel-preset-env"],
-                //plugins: ['babel-plugin-transform-runtime'],
+                plugins: ['babel-plugin-transform-runtime'],
                 compact: true // use compact: false to suppress removing whitespaces
               }}
           ],
@@ -89,6 +88,7 @@ module.exports = {
       ),
     ],
 
+    // Use generate-package-json-webpack-plugin for creating a package.json from the externals
     externals: {
       axios: "axios"
     },

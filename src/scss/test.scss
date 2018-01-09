@@ -7,7 +7,7 @@
 $my-bg-color: #333;
 $my-fg-color: #c00;
 
-.shifted {
+.shifted-function2 {
   background-color: color-shift($my-bg-color);
   color: color-shift($my-fg-color);
 }
