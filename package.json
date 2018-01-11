@@ -9,13 +9,14 @@
     "node": ">=6.9.0",
     "yarn": "^1.3.0"
   },
+
   "dependencies": {
     "@polymer/polymer": "latest",
     "@webcomponents/webcomponentsjs": "latest",
     "axios": "^0.16.2"
   },
+
   "devDependencies": {
-    "argparse": "^1.0.9",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -37,12 +38,12 @@
     "webpack": "latest",
     "webpack-dev-server": "latest"
   },
+
   "scripts": {
     "build": "webpack --env.development",
     "build-production": "webpack --env.production",
     "serve": "webpack-dev-server --open",
-    "dev-install": "node scripts/npm-run-dispatcher.js dev-install",
-    "clean": "node scripts/npm-run-dispatcher.js clean",
+    "clean": "webpack --env.development clean",
     "help": "node scripts/npm-run-dispatcher.js --help",
     "preprocess": "node scripts/npm-run-dispatcher.js preprocess",
     "test": "node_modules/.bin/wct"

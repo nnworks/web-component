@@ -9,6 +9,7 @@ const scssGlob = path.resolve(__dirname, "src") + "/**/*.scss";
 
 // bundle name (will be filtered out)
 const assetBundleName = "styles-bundle.js";
+const cssOutputName = "styles.css";
 
 module.exports = {
   /** *****************************************

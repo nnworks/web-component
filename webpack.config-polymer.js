@@ -10,7 +10,7 @@ module.exports = {
     },
 
     output: {
-      path: path.resolve(__dirname, "dist/lib"),
+      path: path.resolve(__dirname, "dist/support-lib"),
       filename: "[name]-bundle.js",
     },
 
