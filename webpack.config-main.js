@@ -1,5 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
+const packageJSON = require('./package.json');
 
 
 module.exports = {
@@ -80,17 +82,21 @@ module.exports = {
     },
 
     plugins: [
-      new HtmlWebpackPlugin(
-        {
-          template: path.resolve(__dirname, "src/html/index.html"),
-          inject: false
-        }
-      ),
+      new HtmlWebpackPlugin({ template: path.resolve(__dirname, "src/html/index.html"), inject: false }),
+      new GeneratePackageJsonPlugin({
+        "name": packageJSON.name,
+        "version": packageJSON.version,
+        "description": packageJSON.description,
+        "main": packageJSON.main,
+        "author": packageJSON.author,
+        "license": packageJSON.license,
+        "engines": packageJSON.engines,
+      }, __dirname + "/package.json"),
     ],
 
     // Use generate-package-json-webpack-plugin for creating a package.json from the externals
     externals: {
-      axios: "axios"
+      axios: "axios",
     },
 
     devServer: {
