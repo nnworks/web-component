@@ -46,10 +46,14 @@ module.exports = {
               }
             },
             { loader: "polymer-webpack-loader" },
-            {
-              loader: "inline-sass-transpiler",
+            { loader: "replace-linked-css-by-bundle-loader",
               options: {
-                scssPath: ["src/scss"]
+                cssBundleName: "styles.css",
+              }
+            },
+            { loader: "inline-sass-transpiler",
+              options: {
+                scssBasePaths: ["src/scss"]
               }
             }
           ],

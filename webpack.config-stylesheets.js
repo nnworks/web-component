@@ -9,7 +9,7 @@ const scssGlob = path.resolve(__dirname, "src") + "/**/*.scss";
 
 // bundle name (will be filtered out)
 const assetBundleName = "styles-bundle.js";
-const cssOutputName = "styles.css";
+const cssBundleName = "styles.css";
 
 module.exports = {
   /** *****************************************
@@ -54,7 +54,7 @@ module.exports = {
     },
 
     plugins: [
-      new ExtractTextPlugin({ filename: "styles.css" }),
+      new ExtractTextPlugin({ filename: cssBundleName }),
       new FilterChunkPlugin({ patterns: [assetBundleName] }),
     ],
   };

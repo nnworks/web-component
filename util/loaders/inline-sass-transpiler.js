@@ -3,34 +3,37 @@
 let sass = require("node-sass");
 let cheerio = require("cheerio");
 let loaderUtils = require("loader-utils");
-let validateOptions = require('schema-utils');
+let validateOptions = require("schema-utils");
 
-const SCSS_STYLE_ELM = "style[lang='scss']";
+const SCSS_STYLE_ELM = "style[lang=\"scss\"]";
 
 const schema = {
-  type: 'object',
+  $schema: "http://json-schema.org/draft-06/schema#",
+  title: "Options checking schema",
+  type: "object",
+  required: ["scssBasePaths"],
   properties: {
-    test: {
-      type: 'string'
+    scssBasePath: {
+      description: "base path for imports in scss files",
+      type: "array",
+      items: {
+        type: "string",
+      }
     }
   }
-}
+};
 
 
 function inlineSassTranspiler(content, map, meta) {
 
   const options = loaderUtils.getOptions(this) || {};
-
-  console.log(options);
-  validateOptions(schema, options, "InlineSassTranspiler");
-
+  validateOptions(schema, options, "InlineSassTranspilerLoader");
 
   // loop all scss source paths for interpolation
   const interpolatedScssPaths = [];
-  for (var index in options.scssPath) {
-    interpolatedScssPaths.push(loaderUtils.interpolateName(this, options.scssPath[index], (options != null)?options:{}));
+  for (var index in options.scssBasePaths) {
+    interpolatedScssPaths.push(loaderUtils.interpolateName(this, options.scssBasePaths[index], (options != null)?options:{}));
   }
-
 
   var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
   var scssElements = htmlDom(SCSS_STYLE_ELM);
