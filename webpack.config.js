@@ -2,6 +2,7 @@ var mainConfig = require("./webpack.config-main");
 var stylesheetsConfig = require("./webpack.config-stylesheets");
 var polymerConfig = require("./webpack.config-polymer");
 var externalModulesConfig = require("./webpack.config-external-modules");
+var testConfig = require("./webpack.config-test");
 
 
 module.exports = function build(env) {
@@ -12,6 +13,13 @@ module.exports = function build(env) {
   }
 
   return [
+
+    /** *****************************************
+     *  Testing config
+     */
+    // testConfig,
+
+
     /** *****************************************
      *  Main configuration for the web component
      */
@@ -20,16 +28,16 @@ module.exports = function build(env) {
     /** **************************
      *  Css and scss files
      */
-    stylesheetsConfig,
+    // stylesheetsConfig,
 
     /** **************************
      *  Polymer web component libs
      */
-    polymerConfig,
+    // polymerConfig,
 
     /** *****************************************
      *  Configuration for transpiling / bundling required external node modules
      */
-    externalModulesConfig,
+    // externalModulesConfig,
   ];
 }

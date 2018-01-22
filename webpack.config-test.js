@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 
 // bundle name (will be filtered out)
-const assetBundleName = "styles-bundle.js";
+const assetBundleName = "do-not-emit.js";
 const cssBundleName = "styles-bundle.css";
 
 module.exports = {
@@ -55,7 +55,7 @@ module.exports = {
 
   plugins: [
     new ExtractTextPlugin({ filename: cssBundleName, allChunks: true }),
-    new FilterChunkPlugin({ patterns: [assetBundleName] }),
+    new FilterChunkPlugin({ patterns: [assetBundleName, "0." + assetBundleName] }),
     new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
   ],
 };

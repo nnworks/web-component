@@ -22,6 +22,8 @@ const schema = {
 
 function replaceLinkedCssByBundle(content, map, meta) {
 
+  console.log(this.request);
+
   this.cacheable();
 
   const options = loaderUtils.getOptions(this) || {};

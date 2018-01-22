@@ -15,7 +15,11 @@ module.exports = {
   /** *****************************************
    *  Main configuration for the web component
    */
-    entry: glob.sync(cssGlob).concat(glob.sync(scssGlob)),
+    // entry: glob.sync(cssGlob).concat(glob.sync(scssGlob)),
+
+    entry: {
+    "web-component": "./src/html/web-component.html",
+    },
 
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -32,24 +36,24 @@ module.exports = {
     module: {
       rules: [
         {
-          test: /\.css$/,
-          use:
-            ExtractTextPlugin.extract({
-              use: [
-                { loader: "css-loader", options: { url: false, minimize: false }}
-              ]
-          })
-        },
-        {
-          test: /\.scss$/,
+          test: /\.html$/,
           use:
             ExtractTextPlugin.extract({
               use: [
                 { loader: "css-loader", options: { url: false, minimize: false }},
-                { loader: "sass-loader", options: {}}
               ]
-            })
-        }
+          })
+        },
+        // {
+        //   test: /\.scss$/,
+        //   use:
+        //     ExtractTextPlugin.extract({
+        //       use: [
+        //         { loader: "css-loader", options: { url: false, minimize: false }},
+        //         { loader: "sass-loader", options: {}}
+        //       ]
+        //     })
+        // }
       ]
     },
 
