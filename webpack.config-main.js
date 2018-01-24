@@ -1,7 +1,16 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const LinkedCssBundlerPlugin = require("./util/plugins/linked-css-bundler-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const packageJSON = require('./package.json');
+
+
+
+// bundle name (will be filtered out)
+const cssBundleName = "styles.css";
+var linkedCssBundlerPlugin = new LinkedCssBundlerPlugin({ cssBundleName: cssBundleName, });
 
 
 module.exports = {
@@ -46,11 +55,7 @@ module.exports = {
               }
             },
             { loader: "polymer-webpack-loader" },
-            { loader: "replace-linked-css-by-bundle-loader",
-              options: {
-                cssBundleName: "styles.css",
-              }
-            },
+            linkedCssBundlerPlugin.loader(),
             { loader: "inline-sass-transpiler",
               options: {
                 scssBasePaths: ["src/scss"]
@@ -75,12 +80,14 @@ module.exports = {
           // Exclude bower_components and node_modules from transpilation except for polymer-webpack-loader:
           exclude: /node_modules\/(?!polymer-webpack-loader\/)|\/bower_components\/.*/
         },
+
         {
           // all files that end in .css
           test: /\.css$/,
-          use: [
-            "css-loader",
-          ]
+          use: ExtractTextPlugin.extract({
+                  use: [{ loader: "css-loader" , options: { } }
+                  ]
+               })
         }
       ]
     },
@@ -96,6 +103,10 @@ module.exports = {
         "license": packageJSON.license,
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
+      new ExtractTextPlugin({ filename: cssBundleName }),
+      linkedCssBundlerPlugin,
+      // linkedCssBundlerPlugin,
+      //new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
     ],
 
     // Use generate-package-json-webpack-plugin for creating a package.json from the externals

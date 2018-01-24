@@ -27,21 +27,25 @@ function replaceLinkedCssByBundle(content, map, meta) {
   const options = loaderUtils.getOptions(this) || {};
   validateOptions(schema, options, "ReplaceLinkedCssByBundleLoader");
 
-  // parse html
-  var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
-  var cssLinkElements = htmlDom(CSS_STYLE_LINK_ELM);
+  console.log("css-loader");
+  console.log(this.request);
 
-  if (cssLinkElements) {
-    cssLinkElements.each(function(i, element) {
-      var cssHref = htmlDom(element).attr("href");
-      if (cssHref) {
-        htmlDom(element).attr("href", options.cssBundleName);
-        console.log("replaced css link href [" + cssHref + "] with " + options.cssBundleName);
-      }
-    });
-  }
-
-  return htmlDom.html();
+  // // parse html
+  // var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
+  // var cssLinkElements = htmlDom(CSS_STYLE_LINK_ELM);
+  //
+  // if (cssLinkElements) {
+  //   cssLinkElements.each(function(i, element) {
+  //     var cssHref = htmlDom(element).attr("href");
+  //     if (cssHref) {
+  //       htmlDom(element).attr("href", options.cssBundleName);
+  //       console.log("replaced css link href [" + cssHref + "] with " + options.cssBundleName);
+  //     }
+  //   });
+  // }
+  //
+  // return htmlDom.html();
+  return content;
 }
 
 module.exports = replaceLinkedCssByBundle;
