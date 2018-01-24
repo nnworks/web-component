@@ -20,16 +20,16 @@ module.exports = function build(env) {
     /** **************************
      *  Css and scss files
      */
-    stylesheetsConfig,
+    // stylesheetsConfig,
 
     /** **************************
      *  Polymer web component libs
      */
-    polymerConfig,
+    // polymerConfig,
 
     /** *****************************************
      *  Configuration for transpiling / bundling required external node modules
      */
-    externalModulesConfig,
+    // externalModulesConfig,
   ];
 }

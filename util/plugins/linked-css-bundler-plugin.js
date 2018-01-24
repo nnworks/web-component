@@ -4,8 +4,6 @@ class LinkedCssBundlerPlugin {
     this.sharedOptions.linkedCssFiles = [];
   }
 
-  static vaste = "";
-
   apply(compiler) {
     const loaderOptions = this.sharedOptions;
     compiler.plugin('run', function(compiler, callback) {
@@ -22,6 +20,12 @@ class LinkedCssBundlerPlugin {
       callback();
     });
 
+    compiler.plugin('this-compilation', function (compilation) {
+      compilation.plugin('normal-module-loader', function (loaderContext, module) {
+        console.log("normal-module-loader");
+        //console.log(loaderContext);
+      });
+    });
   }
 
   loader() {
