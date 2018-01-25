@@ -16,6 +16,10 @@ const schema = {
       description: "bundles css file to replace the currently linked one",
       type: "string",
     },
+    pluginInstance: {
+      description: "instance of the plugin that will trigger the css bundle genaration",
+      type: "object",
+    }
   }
 };
 
@@ -43,7 +47,7 @@ function linkedCssBundlerLoader(content, map, meta) {
       if (cssHref) {
         htmlDom(element).attr("href", options.cssBundleName);
         console.log("replaced css link href [" + cssHref + "] with " + options.cssBundleName);
-        options.linkedCssFiles.push(cssHref);
+        options.pluginInstance.addLinkedStyleResource(cssHref);
       }
     });
   }

@@ -1,11 +1,14 @@
 class LinkedCssBundlerPlugin {
+
   constructor(options) {
-    this.sharedOptions = options;
-    this.sharedOptions.linkedCssFiles = [];
+    this.loaderOptions = options;
+    this.loaderOptions.pluginInstance = this;
+
+    this.cssFilesToBundle = [];
   }
 
   apply(compiler) {
-    const loaderOptions = this.sharedOptions;
+    const loaderOptions = this.loaderOptions;
     compiler.plugin('run', function(compiler, callback) {
       console.log("The webpack build process is starting!!!");
 
@@ -15,22 +18,27 @@ class LinkedCssBundlerPlugin {
     compiler.plugin('emit', function(compiler, callback) {
       console.log("The webpack build process is emitting!!!");
 
-      console.log(loaderOptions);
+      console.log(this.cssFilesToBundle);
 
       callback();
     });
-
-    compiler.plugin('this-compilation', function (compilation) {
-      compilation.plugin('normal-module-loader', function (loaderContext, module) {
-        console.log("normal-module-loader");
-        //console.log(loaderContext);
-      });
-    });
   }
 
+  /**
+   * For the loader to add found css style files
+   * @param cssFileName
+   */
+  addLinkedStyleResource(cssFileName) {
+    this.cssFilesToBundle.push(cssFileName);
+  }
+
+  /**
+   * returns the loader with the options as given to the constructor of this class
+   * @returns {loader, options}
+   */
   loader() {
     console.log("LinkedCssBundlerPlugin - loader called");
-    return { loader: require.resolve('./linked-css-bundler-loader'), options: this.sharedOptions};
+    return { loader: require.resolve('./linked-css-bundler-loader'), options: this.loaderOptions};
   }
 }
 
