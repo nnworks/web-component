@@ -1,5 +1,4 @@
 var mainConfig = require("./webpack.config-main");
-var stylesheetsConfig = require("./webpack.config-stylesheets");
 var polymerConfig = require("./webpack.config-polymer");
 var externalModulesConfig = require("./webpack.config-external-modules");
 
