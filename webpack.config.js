@@ -25,11 +25,11 @@ module.exports = function build(env) {
     /** **************************
      *  Polymer web component libs
      */
-    // polymerConfig,
+    polymerConfig,
 
     /** *****************************************
      *  Configuration for transpiling / bundling required external node modules
      */
-    // externalModulesConfig,
+    externalModulesConfig,
   ];
 }

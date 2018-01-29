@@ -15,13 +15,24 @@ class LinkedCssBundlerPlugin {
       callback();
     });
 
-    compiler.plugin('emit', function(compiler, callback) {
-      console.log("The webpack build process is emitting!!!");
+    /**
+     * Build a module with all the required styles sheet files as dependencies
+     */
+    compiler.plugin('emit', function(compilation, callback) {
 
-      console.log(this.cssFilesToBundle);
+      var module = "";
+      this.cssFilesToBundle.forEach(function(cssFile, index, filesToBundle) {
+        module += "import(\"" + cssFile + "\");";
+      }.bind(this))
+
+      var moduleBuffer = new Buffer(module);
+      // compilation.assets[this.loaderOptions.cssBundleName] = {
+      //   source: () => moduleBuffer,
+      //   size: () => moduleBuffer.length,
+      // };
 
       callback();
-    });
+    }.bind(this));
   }
 
   /**

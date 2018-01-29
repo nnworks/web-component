@@ -29,28 +29,36 @@ function linkedCssBundlerLoader(content, map, meta) {
   this.cacheable();
 
   const options = loaderUtils.getOptions(this) || {};
-  console.log("loader options: ");
-  console.log(options);
-
   validateOptions(schema, options, "linkedCssBundlerLoader");
 
-  console.log("linked-css-bundler-loader");
-  console.log(options.linkedCssFiles);
+  // console.log(this.request);
 
-  // parse html
+  // parse html in xml mode to leave all as is
   var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
   var cssLinkElements = htmlDom(CSS_STYLE_LINK_ELM);
 
   if (cssLinkElements) {
+    var elementReplaced = false;
     cssLinkElements.each(function(i, element) {
       var cssHref = htmlDom(element).attr("href");
       if (cssHref) {
-        htmlDom(element).attr("href", options.cssBundleName);
-        console.log("replaced css link href [" + cssHref + "] with " + options.cssBundleName);
-        options.pluginInstance.addLinkedStyleResource(cssHref);
+        if(!elementReplaced) {
+          // replace href attribute
+          htmlDom(element).attr("href", options.cssBundleName);
+          options.pluginInstance.addLinkedStyleResource(cssHref);
+          elementReplaced = true;
+        } else {
+          // remove complete tag
+          htmlDom(element).replaceWith("<!-- " + cssHref + " -->");
+          options.pluginInstance.addLinkedStyleResource(cssHref);
+        }
+
+        htmlDom(element).after("\n<script> require(\"" + cssHref + "\"); </script>");
       }
     });
   }
+
+  console.log(htmlDom.html());
 
   return htmlDom.html();
 }

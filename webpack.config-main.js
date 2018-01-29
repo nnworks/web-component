@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LinkedCssBundlerPlugin = require("./util/plugins/linked-css-bundler-plugin");
+const MonitoringPlugin = require("./util/plugins/monitoring-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const packageJSON = require('./package.json');
 
@@ -54,7 +55,8 @@ module.exports = {
                 compact: true // use compact: false to suppress removing whitespaces
               }
             },
-            { loader: "polymer-webpack-loader" },
+            { loader: "polymer-webpack-loader", options: {} },
+            { loader: "monitoring-loader", options: {} },
             linkedCssBundlerPlugin.loader(),
             { loader: "inline-sass-transpiler",
               options: {
@@ -85,7 +87,9 @@ module.exports = {
           // all files that end in .css
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
-                  use: [{ loader: "css-loader" , options: { } }
+                  use: [
+                    { loader: "css-loader", options: { } },
+                    { loader: "monitoring-loader", options: {} }
                   ]
                })
         }
@@ -94,6 +98,7 @@ module.exports = {
 
     plugins: [
       new HtmlWebpackPlugin({ template: path.resolve(__dirname, "src/html/index.html"), inject: false }),
+      // to separate config?
       new GeneratePackageJsonPlugin({
         "name": packageJSON.name,
         "version": packageJSON.version,
@@ -103,10 +108,10 @@ module.exports = {
         "license": packageJSON.license,
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
-      new ExtractTextPlugin({ filename: cssBundleName }),
+      new ExtractTextPlugin({ filename: cssBundleName, allChunks: true }),
       linkedCssBundlerPlugin,
-      // linkedCssBundlerPlugin,
-      //new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+      new MonitoringPlugin({}),
+      new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
     ],
 
     // Use generate-package-json-webpack-plugin for creating a package.json from the externals
