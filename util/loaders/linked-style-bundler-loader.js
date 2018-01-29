@@ -16,10 +16,6 @@ const schema = {
       description: "bundles css file to replace the currently linked one",
       type: "string",
     },
-    pluginInstance: {
-      description: "instance of the plugin that will trigger the css bundle genaration",
-      type: "object",
-    }
   }
 };
 
@@ -31,8 +27,6 @@ function linkedCssBundlerLoader(content, map, meta) {
   const options = loaderUtils.getOptions(this) || {};
   validateOptions(schema, options, "linkedCssBundlerLoader");
 
-  // console.log(this.request);
-
   // parse html in xml mode to leave all as is
   var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
   var cssLinkElements = htmlDom(CSS_STYLE_LINK_ELM);
@@ -42,23 +36,20 @@ function linkedCssBundlerLoader(content, map, meta) {
     cssLinkElements.each(function(i, element) {
       var cssHref = htmlDom(element).attr("href");
       if (cssHref) {
+        // add  require for css
+        htmlDom(element).after("\n<script> require(\"" + cssHref + "\"); </script>");
+
         if(!elementReplaced) {
           // replace href attribute
           htmlDom(element).attr("href", options.cssBundleName);
-          options.pluginInstance.addLinkedStyleResource(cssHref);
           elementReplaced = true;
         } else {
           // remove complete tag
           htmlDom(element).replaceWith("<!-- " + cssHref + " -->");
-          options.pluginInstance.addLinkedStyleResource(cssHref);
         }
-
-        htmlDom(element).after("\n<script> require(\"" + cssHref + "\"); </script>");
       }
     });
   }
-
-  console.log(htmlDom.html());
 
   return htmlDom.html();
 }

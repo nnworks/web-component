@@ -18,11 +18,6 @@ module.exports = function build(env) {
     mainConfig,
 
     /** **************************
-     *  Css and scss files
-     */
-    // stylesheetsConfig,
-
-    /** **************************
      *  Polymer web component libs
      */
     polymerConfig,

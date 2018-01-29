@@ -2,7 +2,6 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const LinkedCssBundlerPlugin = require("./util/plugins/linked-css-bundler-plugin");
 const MonitoringPlugin = require("./util/plugins/monitoring-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const packageJSON = require('./package.json');
@@ -11,8 +10,6 @@ const packageJSON = require('./package.json');
 
 // bundle name (will be filtered out)
 const cssBundleName = "styles.css";
-var linkedCssBundlerPlugin = new LinkedCssBundlerPlugin({ cssBundleName: cssBundleName, });
-
 
 module.exports = {
   /** *****************************************
@@ -56,8 +53,7 @@ module.exports = {
               }
             },
             { loader: "polymer-webpack-loader", options: {} },
-            { loader: "monitoring-loader", options: {} },
-            linkedCssBundlerPlugin.loader(),
+            { loader: "linked-style-bundler-loader", options: { cssBundleName: cssBundleName, }},
             { loader: "inline-sass-transpiler",
               options: {
                 scssBasePaths: ["src/scss"]
@@ -67,6 +63,7 @@ module.exports = {
           // Exclude starting point of bundle
           exclude: /src\/html\/index\.html$/,
         },
+
         {
           // all files that end in .js
           test: /\.js$/,
@@ -92,6 +89,18 @@ module.exports = {
                     { loader: "monitoring-loader", options: {} }
                   ]
                })
+        },
+
+        {
+          test: /\.scss$/,
+          use:
+            ExtractTextPlugin.extract({
+              use: [
+                { loader: "css-loader", options: { url: false, minimize: false }},
+                { loader: "sass-loader", options: {}},
+                { loader: "monitoring-loader", options: {} }
+              ]
+            })
         }
       ]
     },
@@ -109,9 +118,8 @@ module.exports = {
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
       new ExtractTextPlugin({ filename: cssBundleName, allChunks: true }),
-      linkedCssBundlerPlugin,
       new MonitoringPlugin({}),
-      new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+      new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
     ],
 
     // Use generate-package-json-webpack-plugin for creating a package.json from the externals
