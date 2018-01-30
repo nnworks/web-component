@@ -1,3 +1,5 @@
+@import "nested/nested.css";
+
 .shifted-nested {
   background-color: #4d4d4d;
   color: red; }

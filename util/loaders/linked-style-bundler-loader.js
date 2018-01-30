@@ -13,19 +13,25 @@ const schema = {
   required: ["cssBundleName"],
   properties: {
     cssBundleName: {
-      description: "bundles css file to replace the currently linked one",
+      description: "bundled style file name",
       type: "string",
     },
   }
 };
 
-
-function linkedCssBundlerLoader(content, map, meta) {
+/**
+ * Bundles style files (css & scss) to replace the currently linked one.
+ * @param content content of the html file
+ * @param map
+ * @param meta
+ * @returns the changed html
+ */
+function linkedStyleBundlerLoader(content, map, meta) {
 
   this.cacheable();
 
   const options = loaderUtils.getOptions(this) || {};
-  validateOptions(schema, options, "linkedCssBundlerLoader");
+  validateOptions(schema, options, "linked-style-bundler-loader");
 
   // parse html in xml mode to leave all as is
   var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
@@ -54,4 +60,4 @@ function linkedCssBundlerLoader(content, map, meta) {
   return htmlDom.html();
 }
 
-module.exports = linkedCssBundlerLoader;
+module.exports = linkedStyleBundlerLoader;

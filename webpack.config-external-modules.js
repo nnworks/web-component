@@ -6,7 +6,7 @@ module.exports = {
    */
     entry: {
       "axios": "./node_modules/axios/lib/axios.js",
-      "webcomponents-helper": "./util/webcomponents-helper.js",
+      "webpack-wc-helper": "./util/webpack-wc-helper.js",
     },
 
     output: {
