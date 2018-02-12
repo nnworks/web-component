@@ -1,28 +1,28 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>web-component demo</title>
+  <title>web-component demo</title>
 
-    <style>
-      [showComponentWhenConnected] {
-        opacity: 0;
-      }
-    </style>
+  <style>
+    [showComponentWhenConnected] {
+      opacity: 0;
+    }
+  </style>
 
-    <script src="support-lib/webpack-wc-helper-bundle.js" wc-location="support-lib/webcomponentsjs" bundles="support-lib/axios-bundle.js, support-lib/polymer-bundle.js, web-component-bundle.js"></script>
-  </head>
-  <body>
+  <script src="support-libs/webpack-wc-helper-bundle.js" wc-location="support-libs/webcomponentsjs" bundles="support-libs/axios-bundle.js, support-libs/polymer-bundle.js, web-component-bundle.js"></script>
+</head>
+<body>
 
-  <h3 class="localScss">outside component</h3>
+<h3 class="localScss">outside component</h3>
 
-    <web-component showComponentWhenConnected>
-      <span slot="title">Title slot text</span>
-      <span slot="subject">Subject slot text</span>
-      <span slot="spanning">Spanning slot text</span>
-    </web-component>
+<web-component showComponentWhenConnected>
+  <span slot="title">Title slot text</span>
+  <span slot="subject">Subject slot text</span>
+  <span slot="spanning">Spanning slot text</span>
+</web-component>
 
-  </body>
+</body>
 </html>

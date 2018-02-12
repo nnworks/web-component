@@ -13,7 +13,7 @@ const schema = {
   type: "object",
   required: ["scssBasePaths"],
   properties: {
-    scssBasePath: {
+    scssBasePaths: {
       description: "base path for imports in scss files",
       type: "array",
       items: {
@@ -24,7 +24,7 @@ const schema = {
 };
 
 
-function inlineSassTranspiler(content, map, meta) {
+function InlineSassTranspiler(content, map, meta) {
 
   const options = loaderUtils.getOptions(this) || {};
   validateOptions(schema, options, "InlineSassTranspilerLoader");
@@ -56,4 +56,6 @@ function inlineSassTranspiler(content, map, meta) {
   return htmlDom.html();
 }
 
-module.exports = inlineSassTranspiler;
+// expose schema
+InlineSassTranspiler.schema = schema;
+module.exports = InlineSassTranspiler;

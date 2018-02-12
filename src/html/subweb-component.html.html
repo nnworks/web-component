@@ -8,9 +8,7 @@
 </style>
 
 
-<img src="../resources/images/biohazard.png" />
-
-<dom-module id="web-component">
+<dom-module id="subweb-component">
 
   <link rel="stylesheet" type="text/css" href="../css/test.css"/>
   <link rel="stylesheet" type="text/css" href="../scss/test.scss"/>
@@ -113,21 +111,21 @@
      * @polymer
      * @demo demo/index.html
      */
-    class WebComponent extends Polymer.Element {
+    class SubWebComponent extends Polymer.Element {
       static get is() {
-        return 'web-component';
+        return 'subweb-component';
       }
 
       constructor() {
         super();
 
-        this.elementName = 'web-component'
+        this.elementName = 'subweb-component',
         this.component = {
           componentName: "StockComponent",
           counter: 1
         }
 
-        console.log("web-component constructed");
+        console.log("subweb-component constructed");
       };
 
       connectedCallback() {
@@ -148,7 +146,7 @@
       }
     }
 
-    customElements.define(WebComponent.is, WebComponent);
+    customElements.define(SubWebComponent.is, SubWebComponent);
 
   </script>
 </dom-module>

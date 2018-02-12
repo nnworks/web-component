@@ -28,10 +28,17 @@ class WCHelperPlugin {
      * Build a module with all the required styles sheet files as dependencies
      */
     compiler.plugin('emit', function(compilation, callback) {
-
+      compilation.assets["webpack-wc-helper.js"] =
 
       callback();
     }.bind(this));
+
+
+    compiler.plugin("emit", function (compilation, callback) {
+      compilation.fileDependencies.push(path.join(compiler.context, template));
+      // ...
+    });
+
   }
 
 }

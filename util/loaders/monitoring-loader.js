@@ -10,6 +10,10 @@ function linkedCssBundlerLoader(content, map, meta) {
 
   console.log("module " + this.resourcePath + " passes monitoring loader...");
 
+  if (options.showContent) {
+    console.log(content);
+  }
+
   return content;
 }
 

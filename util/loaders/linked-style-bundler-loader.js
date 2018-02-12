@@ -10,9 +10,9 @@ const schema = {
   $schema: "http://json-schema.org/draft-06/schema#",
   title: "Options checking schema",
   type: "object",
-  required: ["cssBundleName"],
+  required: ["cssBundlePath"],
   properties: {
-    cssBundleName: {
+    cssBundlePath: {
       description: "bundled style file name",
       type: "string",
     },
@@ -47,7 +47,7 @@ function linkedStyleBundlerLoader(content, map, meta) {
 
         if(!elementReplaced) {
           // replace href attribute
-          htmlDom(element).attr("href", options.cssBundleName);
+          htmlDom(element).attr("href", options.cssBundlePath);
           elementReplaced = true;
         } else {
           // remove complete tag

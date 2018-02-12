@@ -1,23 +1,59 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const MonitoringPlugin = require("./util/plugins/monitoring-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const packageJSON = require('./package.json');
 
+const validateOptions = require("schema-utils");
+const resourceCopierLoaderSchema = require("./util/loaders/resource-copier-loader").schema;
+const inlineSassTranspilerSchema = require("./util/loaders/inline-sass-transpiler").schema;
 
 
-// bundle name (will be filtered out)
-const cssBundleName = "styles.css";
-
-module.exports = {
-  /** *****************************************
-   *  Main configuration for the web component
-   */
-    entry: {
-      "web-component": "./src/html/web-component.html"
+const optionsSchema = {
+  $schema: "http://json-schema.org/draft-06/schema#",
+  title: "Options checking schema",
+  type: "object",
+  required: ["entries"],
+  properties: {
+    entries: {
+      description: "entries object",
+      type: "object"
     },
+    cssBundlePath: {
+      description: "path for linked bundled css file",
+      type: "string"
+    },
+    scssBasePaths: inlineSassTranspilerSchema,
+    copyResources: resourceCopierLoaderSchema
+  }
+};
+
+
+// function createCopyPluginFromAndTos(copyResources) {
+//   resourceArray = [];
+//
+//   copyResources.forEach(function(fromTo, index) {
+//     let from = path.resolve(__dirname, fromTo.from);
+//     let to = fromTo.to;
+//     resourceArray.push({from: from, to: to});
+//   });
+//
+//   return resourceArray;
+// }
+
+/**
+ *  Main configuration for the web component. Generates the web-component bundle, a css bundle for all
+ *  linked css and scss files.
+ *  Needs to copy all resources (images etc from a resource directory, sources are not automatically processed)...
+ *
+ */
+module.exports = function(options) {
+
+  validateOptions(optionsSchema, options, "webpack-main-config");
+
+
+  var config =  {
+    entry: options.entries,
 
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -52,13 +88,10 @@ module.exports = {
                 compact: true // use compact: false to suppress removing whitespaces
               }
             },
+            { loader: "monitoring-loader", options: {} },
             { loader: "polymer-webpack-loader", options: {} },
-            { loader: "linked-style-bundler-loader", options: { cssBundleName: cssBundleName, }},
-            { loader: "inline-sass-transpiler",
-              options: {
-                scssBasePaths: ["src/scss"]
-              }
-            }
+            { loader: "linked-style-bundler-loader", options: { cssBundlePath: options.cssBundlePath }},
+            { loader: "resource-copier-loader", options: options.resourcesCopierLoaderOptions }
           ],
           // Exclude starting point of bundle
           exclude: /src\/html\/index\.html$/,
@@ -84,11 +117,11 @@ module.exports = {
           // all files that end in .css
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
-                  use: [
-                    { loader: "css-loader", options: { } },
-                    { loader: "monitoring-loader", options: {} }
-                  ]
-               })
+            use: [
+              { loader: "css-loader", options: { } },
+              { loader: "monitoring-loader", options: {} }
+            ]
+          })
         },
 
         {
@@ -101,12 +134,19 @@ module.exports = {
                 { loader: "monitoring-loader", options: {} }
               ]
             })
+        },
+
+        {
+          test: new RegExp("\\.(png|jpg|gif)$"),
+          use: [
+            { loader: "monitoring-loader", options: { showContent: true }},
+            { loader: 'file-loader', options: {name: 'resources/[ext]/[name].[ext]', useRelativePath: false}}
+          ]
         }
       ]
     },
 
     plugins: [
-      new HtmlWebpackPlugin({ template: path.resolve(__dirname, "src/html/index.html"), inject: false }),
       // to separate config?
       new GeneratePackageJsonPlugin({
         "name": packageJSON.name,
@@ -117,12 +157,13 @@ module.exports = {
         "license": packageJSON.license,
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
-      new ExtractTextPlugin({ filename: cssBundleName, allChunks: true }),
-      new MonitoringPlugin({}),
-      new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
+      new ExtractTextPlugin({ filename: options.cssBundlePath, allChunks: true }),
+
+      // creates a bundle content report
+      new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false, reportFilename: "bundle-content-report.html" }),
     ],
 
-    // Use generate-package-json-webpack-plugin for creating a package.json from the externals
+    // Will be put in the modules dist folder package.json if the generate-package-json-webpack-plugin is used
     externals: {
       axios: "axios",
     },
@@ -135,4 +176,7 @@ module.exports = {
 
     devtool: "source-map"
   };
+
+  return config;
+};
 
