@@ -140,7 +140,7 @@ module.exports = function(options) {
           test: new RegExp("\\.(png|jpg|gif)$"),
           use: [
             { loader: "monitoring-loader", options: { showContent: true }},
-            { loader: 'file-loader', options: {name: 'resources/[ext]/[name].[ext]', useRelativePath: false}}
+            { loader: 'file-loader', options: {name: '[path][name].[ext]', useRelativePath: false, context: path.resolve(__dirname, "src")}}
           ]
         }
       ]
