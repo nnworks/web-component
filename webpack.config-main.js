@@ -5,7 +5,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const packageJSON = require('./package.json');
 
 const validateOptions = require("schema-utils");
-const resourceCopierLoaderSchema = require("./util/loaders/resource-copier-loader").schema;
 const inlineSassTranspilerSchema = require("./util/loaders/inline-sass-transpiler").schema;
 
 
@@ -15,6 +14,10 @@ const optionsSchema = {
   type: "object",
   required: ["entries"],
   properties: {
+    srcDir: {
+      description: "base path to find the project code to build in",
+      type: "string"
+    },
     entries: {
       description: "entries object",
       type: "object"
@@ -23,23 +26,22 @@ const optionsSchema = {
       description: "path for linked bundled css file",
       type: "string"
     },
+
     scssBasePaths: inlineSassTranspilerSchema,
-    copyResources: resourceCopierLoaderSchema
+
+    resourceCopyOptions: {
+      description: "settings for copying the resources referred to in the processed files",
+      type: "object",
+      required: ["extensions"],
+      properties: {
+        extensions: {
+          description: "specify extensions that need to be copied, '|' separated. Example: png|jpg|jpeg",
+          type: "string"
+        }
+      }
+    }
   }
 };
-
-
-// function createCopyPluginFromAndTos(copyResources) {
-//   resourceArray = [];
-//
-//   copyResources.forEach(function(fromTo, index) {
-//     let from = path.resolve(__dirname, fromTo.from);
-//     let to = fromTo.to;
-//     resourceArray.push({from: from, to: to});
-//   });
-//
-//   return resourceArray;
-// }
 
 /**
  *  Main configuration for the web component. Generates the web-component bundle, a css bundle for all
@@ -52,7 +54,10 @@ module.exports = function(options) {
   validateOptions(optionsSchema, options, "webpack-main-config");
 
 
-  var config =  {
+  var config = {
+
+    context: (typeof options.srcDir !== "undefined")? options.srcDir : "",
+
     entry: options.entries,
 
     output: {
@@ -90,8 +95,7 @@ module.exports = function(options) {
             },
             { loader: "monitoring-loader", options: {} },
             { loader: "polymer-webpack-loader", options: {} },
-            { loader: "linked-style-bundler-loader", options: { cssBundlePath: options.cssBundlePath }},
-            { loader: "resource-copier-loader", options: options.resourcesCopierLoaderOptions }
+            { loader: "linked-style-bundler-loader", options: { cssBundlePath: options.cssBundlePath }}
           ],
           // Exclude starting point of bundle
           exclude: /src\/html\/index\.html$/,
@@ -137,10 +141,10 @@ module.exports = function(options) {
         },
 
         {
-          test: new RegExp("\\.(png|jpg|gif)$"),
+          test: new RegExp("\\.(" + options.resourceCopyOptions.extensions + ")$"),
           use: [
             { loader: "monitoring-loader", options: { showContent: true }},
-            { loader: 'file-loader', options: {name: '[path][name].[ext]', useRelativePath: false, context: path.resolve(__dirname, "src")}}
+            { loader: 'file-loader', options: {name: '[path][name].[ext]', useRelativePath: false}}
           ]
         }
       ]

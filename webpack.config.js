@@ -1,6 +1,10 @@
+const path = require("path");
 var mainConfig = require("./webpack.config-main");
-var polymerConfig = require("./webpack.config-polymer");
+var demoConfig = require("./webpack.config-demo");
 var supportLibsConfig = require("./webpack.config-supportlibs");
+
+
+var srcDir = "src";
 
 
 module.exports = function build(env) {
@@ -15,16 +19,12 @@ module.exports = function build(env) {
      *  Main configuration for the web component
      */
     mainConfig({
-      entries: { "web-component": "./src/html/web-component.html" },
+      srcDir: path.resolve(__dirname, srcDir),
+      entries: { "web-component": "./html/web-component.html" },
       cssBundlePath: "css/styles.css",
       inlineSassTranspilerOptions: { scssBasePaths: ["src/scss"] },
-      resourcesCopierLoaderOptions: { resourceSelectors: [{ resourcePath: "img", selector: "img", attr: "src" }]}
+      resourceCopyOptions: { extensions: "png|jpg" }
     }),
-
-    /** **************************
-     *  Polymer web component libs
-     */
-    //polymerConfig,
 
     /** *****************************************
      *  Configuration for transpiling / bundling required external node modules
@@ -34,6 +34,13 @@ module.exports = function build(env) {
                  "axios": "./node_modules/axios/lib/axios.js",
                  "webpack-wc-helper": "./util/webpack-wc-helper.js" },
       supportLibsPath: "support-libs"
+    }),
+
+    demoConfig({
+      srcDir: path.resolve(__dirname, srcDir),
+      bundles: [],
+      htmlFiles: ["./html/demo.html"],
     })
+
   ];
 };

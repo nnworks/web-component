@@ -32,20 +32,30 @@ const optionsSchema = {
   }
 };
 
+function createEntriesFromOptions(options) {
+  var entries = {};
+  for (let index = 0; index < options.htmlFiles.length; index++) {
+    entries["file" + index] = options.htmlFiles[index];
+  }
+
+  return entries;
+}
+
 
 module.exports = function(options) {
 
   return {
+
+    context: (typeof options.srcDir !== "undefined")? options.srcDir : "",
+
     /** *****************************************
      *  Main configuration for the web component
      */
-    entry: {
-      "web-component": "./src/html/web-component.html"
-    },
+    entry: createEntriesFromOptions(options),
 
     output: {
       path: path.resolve(__dirname, "dist"),
-        filename: "[name]-bundle.js",
+      filename: "[name]-bundle.js",
     },
 
     resolve: {
@@ -54,44 +64,27 @@ module.exports = function(options) {
       ]
     },
 
-    resolveLoader: {
-      modules: [
-        'node_modules',
-        path.resolve(__dirname, 'util/loaders')
-      ]
-    },
-
     // These rules tell Webpack how to process different module types.
     module: {
       rules: [
         {
-          // all files that end in .js
-          test: /\.js$/,
+          test: /\.html$/,
           use: [
-            {
-              loader: "babel-loader",
-              options: {
-                presets: ["babel-preset-env"],
-                plugins: ['babel-plugin-transform-runtime'],
-                compact: true // use compact: false to suppress removing whitespaces
-              }}
-          ],
-          // Exclude bower_components and node_modules from transpilation except for polymer-webpack-loader:
-          exclude: /node_modules\/(?!polymer-webpack-loader\/)|\/bower_components\/.*/
-        },
+            { loader: "file-loader", options: { name: "[path][name].[ext]" }},
+            { loader: "extract-loader", options: {}},
+            { loader: "html-loader", options: {}}
+          ]
+        }
 
       ]
     },
 
     plugins: [
-      new HtmlWebpackPlugin({ template: path.resolve(__dirname, "src/html/index.html"),
-        inject: false,
-        filename: "demo/index.html"}),
     ],
 
-      // Will be put in the modules dist folder package.json if the generate-package-json-webpack-plugin
-      externals: {
-  },
+    // Will be put in the modules dist folder package.json if the generate-package-json-webpack-plugin
+    externals: {
+    },
 
     devServer: {
       contentBase: path.join(__dirname, "./"),
