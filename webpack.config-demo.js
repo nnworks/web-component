@@ -1,33 +1,36 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const GeneratePackageJsonPlugin = require("generate-package-json-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MonitoringPlugin = require("./util/plugins/monitoring-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const packageJSON = require('./package.json');
-const validateOptions = require("schema-utils");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const packageJSON = require("./package.json");
+const jsonValidator = require("./util/json-validator");
 
 
 const optionsSchema = {
   $schema: "http://json-schema.org/draft-06/schema#",
   title: "Options checking schema",
   type: "object",
-  required: ["entries"],
+  required: ["outputPath"],
   properties: {
-    entries: {
-      description: "entries object",
-      type: "object"
+    resourceCopyOptions: {
+      description: "settings for copying the resources referred to in the processed files",
+      type: "object",
+      required: ["extensions"],
+      properties: {
+        extensions: {
+          description: "specify extensions that need to be copied, '|' separated. Example: png|jpg|jpeg",
+          type: "string"
+        }
+      }
     },
-    cssBundlePath: {
-      description: "path for linked bundled css file",
+    srcDir: {
+      description: "base path to find the demo code to build in (for example 'src/demo')",
       type: "string"
     },
-    scssBasePaths: {
-      description: "array with directories where scss files can be found",
-      type: "array",
-      items: {
-        type: "string"
-      }
+    outputPath: {
+      description: "path to store the demo in (relative to the dist directory)",
+      type: "string"
     }
   }
 };
@@ -44,6 +47,8 @@ function createEntriesFromOptions(options) {
 
 module.exports = function(options) {
 
+  jsonValidator.validate(options, optionsSchema, "Demo Configuration").throwOnError();
+
   return {
 
     context: (typeof options.srcDir !== "undefined")? options.srcDir : "",
@@ -54,7 +59,7 @@ module.exports = function(options) {
     entry: createEntriesFromOptions(options),
 
     output: {
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "dist/demo"),
       filename: "[name]-bundle.js",
     },
 
@@ -70,9 +75,16 @@ module.exports = function(options) {
         {
           test: /\.html$/,
           use: [
-            { loader: "file-loader", options: { name: "[path][name].[ext]" }},
-            { loader: "extract-loader", options: {}},
+            { loader: "file-loader", options: { name: "[path][name].[ext]", useRelativePath: false }},
+            { loader: "extract-loader", options: { publicPath: "../" }},
             { loader: "html-loader", options: {}}
+          ]
+        },
+
+        {
+          test: new RegExp("\\.(" + options.resourceCopyOptions.extensions + ")$"),
+          use: [
+            { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}}
           ]
         }
 

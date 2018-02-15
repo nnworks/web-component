@@ -1,10 +1,10 @@
 const path = require("path");
-const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const packageJSON = require('./package.json');
+const GeneratePackageJsonPlugin = require("generate-package-json-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const packageJSON = require("./package.json");
+const jsonValidator = require("./util/json-validator");
 
-const validateOptions = require("schema-utils");
 const inlineSassTranspilerSchema = require("./util/loaders/inline-sass-transpiler").schema;
 
 
@@ -12,16 +12,23 @@ const optionsSchema = {
   $schema: "http://json-schema.org/draft-06/schema#",
   title: "Options checking schema",
   type: "object",
-  required: ["entries"],
+  required: ["entries", "outputPath"],
   properties: {
     srcDir: {
-      description: "base path to find the project code to build in",
+      description: "base path to find the project code to build in (for example 'src')",
       type: "string"
     },
+
+    outputPath: {
+      description: "path to store the demo in (relative to the dist directory)",
+      type: "string"
+    },
+
     entries: {
       description: "entries object",
       type: "object"
     },
+
     cssBundlePath: {
       description: "path for linked bundled css file",
       type: "string"
@@ -51,8 +58,7 @@ const optionsSchema = {
  */
 module.exports = function(options) {
 
-  validateOptions(optionsSchema, options, "webpack-main-config");
-
+  jsonValidator.validate(options, optionsSchema, "Main Configuration").throwOnError();
 
   var config = {
 
@@ -73,8 +79,8 @@ module.exports = function(options) {
 
     resolveLoader: {
       modules: [
-        'node_modules',
-        path.resolve(__dirname, 'util/loaders')
+        "node_modules",
+        path.resolve(__dirname, "util/loaders")
       ]
     },
 
@@ -93,7 +99,6 @@ module.exports = function(options) {
                 compact: true // use compact: false to suppress removing whitespaces
               }
             },
-            { loader: "monitoring-loader", options: {} },
             { loader: "polymer-webpack-loader", options: {} },
             { loader: "linked-style-bundler-loader", options: { cssBundlePath: options.cssBundlePath }}
           ],
@@ -109,7 +114,7 @@ module.exports = function(options) {
               loader: "babel-loader",
               options: {
                 presets: ["babel-preset-env"],
-                plugins: ['babel-plugin-transform-runtime'],
+                plugins: ["babel-plugin-transform-runtime"],
                 compact: true // use compact: false to suppress removing whitespaces
               }}
           ],
@@ -123,7 +128,6 @@ module.exports = function(options) {
           use: ExtractTextPlugin.extract({
             use: [
               { loader: "css-loader", options: { } },
-              { loader: "monitoring-loader", options: {} }
             ]
           })
         },
@@ -135,7 +139,6 @@ module.exports = function(options) {
               use: [
                 { loader: "css-loader", options: { url: false, minimize: false }},
                 { loader: "sass-loader", options: {}},
-                { loader: "monitoring-loader", options: {} }
               ]
             })
         },
@@ -143,8 +146,7 @@ module.exports = function(options) {
         {
           test: new RegExp("\\.(" + options.resourceCopyOptions.extensions + ")$"),
           use: [
-            { loader: "monitoring-loader", options: { showContent: true }},
-            { loader: 'file-loader', options: {name: '[path][name].[ext]', useRelativePath: false}}
+            { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}}
           ]
         }
       ]
@@ -164,7 +166,7 @@ module.exports = function(options) {
       new ExtractTextPlugin({ filename: options.cssBundlePath, allChunks: true }),
 
       // creates a bundle content report
-      new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false, reportFilename: "bundle-content-report.html" }),
+      new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false, reportFilename: "bundle-content-report.html" }),
     ],
 
     // Will be put in the modules dist folder package.json if the generate-package-json-webpack-plugin is used

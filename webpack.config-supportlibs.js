@@ -1,6 +1,7 @@
 const path = require("path");
 const validateOptions = require("schema-utils");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const jsonValidator = require("./util/json-validator");
 
 
 const optionsSchema = {
@@ -21,6 +22,8 @@ const optionsSchema = {
 };
 
 module.exports = function(options) {
+
+  jsonValidator.validate(options, optionsSchema).throwOnError();
 
   return {
     /** *****************************************
