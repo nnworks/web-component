@@ -1,6 +1,6 @@
 const path = require("path");
 const GeneratePackageJsonPlugin = require("generate-package-json-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const WcHelperPlugin = require("./util/plugins/wc-helper-plugin");
 const MonitoringPlugin = require("./util/plugins/monitoring-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const packageJSON = require("./package.json");
@@ -44,6 +44,8 @@ function createEntriesFromOptions(options) {
   return entries;
 }
 
+var wcHelperPlugin = new WcHelperPlugin({});
+
 
 module.exports = function(options) {
 
@@ -77,7 +79,8 @@ module.exports = function(options) {
           use: [
             { loader: "file-loader", options: { name: "[path][name].[ext]", useRelativePath: false }},
             { loader: "extract-loader", options: { publicPath: "../" }},
-            { loader: "html-loader", options: {}}
+            { loader: "html-loader", options: {minimize: false, removeComments: false, collapseWhitespace: false }},
+            wcHelperPlugin.loader()
           ]
         },
 
@@ -87,11 +90,11 @@ module.exports = function(options) {
             { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}}
           ]
         }
-
       ]
     },
 
     plugins: [
+      wcHelperPlugin,
     ],
 
     // Will be put in the modules dist folder package.json if the generate-package-json-webpack-plugin

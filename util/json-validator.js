@@ -37,8 +37,18 @@ class Result {
     return message;
   }
 
+  hasErrors() {
+    return this.errors.length > 0;
+  }
+
+  logOnError() {
+    if (this.hasErrors()) {
+      console.log(this.createErrorMsg());
+    }
+  }
+
   getErrorMessage() {
-    if (this.errors.length > 0) {
+    if (this.hasErrors()) {
       return this.createErrorMsg();
     } else {
       return null;
@@ -46,8 +56,8 @@ class Result {
   }
 
   throwOnError() {
-    if (this.errors.length > 0) {
-      throw this.createErrorMsg();
+    if (this.hasErrors()) {
+      throw new Error(this.createErrorMsg());
     }
   }
 }

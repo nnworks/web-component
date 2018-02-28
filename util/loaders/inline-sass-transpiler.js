@@ -1,13 +1,13 @@
 "use strict";
 
-let sass = require("node-sass");
-let cheerio = require("cheerio");
-let loaderUtils = require("loader-utils");
-let validateOptions = require("schema-utils");
+const sass = require("node-sass");
+const cheerio = require("cheerio");
+const loaderUtils = require("loader-utils");
+const jsonValidator = require("../json-validator");
 
 const SCSS_STYLE_ELM = "style[lang=\"scss\"]";
 
-const schema = {
+const optionsSchema = {
   $schema: "http://json-schema.org/draft-06/schema#",
   title: "Options checking schema",
   type: "object",
@@ -27,7 +27,7 @@ const schema = {
 function InlineSassTranspiler(content, map, meta) {
 
   const options = loaderUtils.getOptions(this) || {};
-  validateOptions(schema, options, "InlineSassTranspilerLoader");
+  jsonValidator.validate(options, optionsSchema, "inline-sass-transpiler").throwOnError();
 
   // loop all scss source paths for interpolation
   const interpolatedScssPaths = [];
@@ -57,5 +57,5 @@ function InlineSassTranspiler(content, map, meta) {
 }
 
 // expose schema
-InlineSassTranspiler.schema = schema;
+InlineSassTranspiler.optionsSchema = optionsSchema;
 module.exports = InlineSassTranspiler;

@@ -1,12 +1,12 @@
 "use strict";
 
-let cheerio = require("cheerio");
-let loaderUtils = require("loader-utils");
-let validateOptions = require("schema-utils");
+const cheerio = require("cheerio");
+const loaderUtils = require("loader-utils");
+const jsonValidator = require("../json-validator");
 
 const CSS_STYLE_LINK_ELM = "link[rel=\"stylesheet\"]";
 
-const schema = {
+const optionsSchema = {
   $schema: "http://json-schema.org/draft-06/schema#",
   title: "Options checking schema",
   type: "object",
@@ -31,7 +31,7 @@ function linkedStyleBundlerLoader(content, map, meta) {
   this.cacheable();
 
   const options = loaderUtils.getOptions(this) || {};
-  validateOptions(schema, options, "linked-style-bundler-loader");
+  jsonValidator.validate(options, optionsSchema, "linked-style-bundler-loader").throwOnError();
 
   // parse html in xml mode to leave all as is
   var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});

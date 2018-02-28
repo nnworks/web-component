@@ -1,6 +1,8 @@
-let validateOptions = require("schema-utils");
+const path = require("path");
+const jsonValidator = require("../json-validator");
 
-const schema = {
+
+const optionsSchema = {
   $schema: "http://json-schema.org/draft-06/schema#",
   title: "Options checking schema",
   type: "object",
@@ -13,13 +15,22 @@ const schema = {
   }
 };
 
+function loaderFunction(content, map, meta) {
+  this.cacheable();
+
+  return content;
+}
 
 class WCHelperPlugin {
 
   constructor(options) {
+    //jsonValidator.validate(options, optionsSchema, "wc-helper-plugin").throwOnError();
 
-    validateOptions(schema, options, "wc-helper-plugin");
+    this.options = options;
+  }
 
+  loader() {
+    return loaderFunction;
   }
 
   apply(compiler) {
@@ -28,14 +39,14 @@ class WCHelperPlugin {
      * Build a module with all the required styles sheet files as dependencies
      */
     compiler.plugin('emit', function(compilation, callback) {
-      compilation.assets["webpack-wc-helper.js"] =
+      //compilation.assets["webpack-wc-helper.js"] =
 
       callback();
     }.bind(this));
 
 
     compiler.plugin("emit", function (compilation, callback) {
-      compilation.fileDependencies.push(path.join(compiler.context, template));
+//      compilation.fileDependencies.push(path.join(compiler.context, template));
       // ...
     });
 
@@ -45,4 +56,4 @@ class WCHelperPlugin {
 
 
 
-module.exports = MonitoringPlugin;
+module.exports = WCHelperPlugin;

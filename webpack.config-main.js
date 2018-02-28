@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const packageJSON = require("./package.json");
 const jsonValidator = require("./util/json-validator");
 
-const inlineSassTranspilerSchema = require("./util/loaders/inline-sass-transpiler").schema;
+const inlineSassTranspilerSchema = require("./util/loaders/inline-sass-transpiler").optionsSchema;
 
 
 const optionsSchema = {
@@ -68,7 +68,7 @@ module.exports = function(options) {
 
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: "[name]-bundle.js",
+      filename: "[name].js",
     },
 
     resolve: {
@@ -100,10 +100,13 @@ module.exports = function(options) {
               }
             },
             { loader: "polymer-webpack-loader", options: {} },
-            { loader: "linked-style-bundler-loader", options: { cssBundlePath: options.cssBundlePath }}
+            //{ loader: "inline-sass-transpiler", options: { scssBasePaths: ["src/scss"] } },
+            //{ loader: "linked-style-bundler-loader", options: { cssBundlePath: "css/styles.css" } },
+            { loader: "inline-sass-transpiler", options: options.inlineSassTranspilerOptions },
+            { loader: "linked-style-bundler-loader", options: options.linkedStyleBundlerLoaderOptions }
           ],
           // Exclude starting point of bundle
-          exclude: /src\/html\/index\.html$/,
+          //exclude: /src\/html\/index\.html$/,
         },
 
         {
@@ -163,7 +166,7 @@ module.exports = function(options) {
         "license": packageJSON.license,
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
-      new ExtractTextPlugin({ filename: options.cssBundlePath, allChunks: true }),
+      new ExtractTextPlugin({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath, allChunks: true }),
 
       // creates a bundle content report
       new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false, reportFilename: "bundle-content-report.html" }),
