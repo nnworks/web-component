@@ -1,5 +1,5 @@
 const path = require("path");
-const jsonValidator = require("../json-validator");
+const jsonValidator = require("../../json-validator");
 
 
 const optionsSchema = {
@@ -15,12 +15,6 @@ const optionsSchema = {
   }
 };
 
-function loaderFunction(content, map, meta) {
-  this.cacheable();
-
-  return content;
-}
-
 class WCHelperPlugin {
 
   constructor(options) {
@@ -30,7 +24,9 @@ class WCHelperPlugin {
   }
 
   loader() {
-    return loaderFunction;
+    var loaderSpec = { loader: require.resolve('./wc-helper-loader'), options: this.options };
+    console.log(loaderSpec);
+    return loaderSpec;
   }
 
   apply(compiler) {
@@ -39,21 +35,12 @@ class WCHelperPlugin {
      * Build a module with all the required styles sheet files as dependencies
      */
     compiler.plugin('emit', function(compilation, callback) {
-      //compilation.assets["webpack-wc-helper.js"] =
+      // compilation.assets["webpack-wc-helper.js"] =
+      // compilation.fileDependencies.push(path.join(compiler.context, template));
 
       callback();
     }.bind(this));
-
-
-    compiler.plugin("emit", function (compilation, callback) {
-//      compilation.fileDependencies.push(path.join(compiler.context, template));
-      // ...
-    });
-
   }
-
 }
-
-
 
 module.exports = WCHelperPlugin;

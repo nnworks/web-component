@@ -1,9 +1,5 @@
 const path = require("path");
-const GeneratePackageJsonPlugin = require("generate-package-json-webpack-plugin");
-const WcHelperPlugin = require("./util/plugins/wc-helper-plugin");
-const MonitoringPlugin = require("./util/plugins/monitoring-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const packageJSON = require("./package.json");
+const WcHelperPlugin = require("./util/plugins/wc-helper-plugin/wc-helper-plugin");
 const jsonValidator = require("./util/json-validator");
 
 
@@ -40,7 +36,7 @@ function createEntriesFromOptions(options) {
   for (let index = 0; index < options.htmlFiles.length; index++) {
     entries["file" + index] = options.htmlFiles[index];
   }
-
+console.log(entries);
   return entries;
 }
 
@@ -51,7 +47,7 @@ module.exports = function(options) {
 
   jsonValidator.validate(options, optionsSchema, "Demo Configuration").throwOnError();
 
-  return {
+  var config = {
 
     context: (typeof options.srcDir !== "undefined")? options.srcDir : "",
 
@@ -110,6 +106,7 @@ module.exports = function(options) {
     devtool: "source-map"
   };
 
-}
+  return config;
+};
 
 
