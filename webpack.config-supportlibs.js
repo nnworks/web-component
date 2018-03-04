@@ -33,7 +33,7 @@ module.exports = function(options) {
 
     output: {
       path: path.resolve(__dirname, "dist/" + options.supportLibsPath),
-      filename: "[name]-bundle.js",
+      filename: "[name].js",
       library: "[name]",
       libraryTarget: "umd",
     },

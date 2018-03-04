@@ -31,21 +31,29 @@ const optionsSchema = {
   }
 };
 
+/**
+ * Create entries set from array
+ * @param options
+ * @returns entries object
+ */
 function createEntriesFromOptions(options) {
   var entries = {};
   for (let index = 0; index < options.htmlFiles.length; index++) {
-    entries["file" + index] = options.htmlFiles[index];
+    entries["demoBundle" + index] = options.htmlFiles[index];
   }
-console.log(entries);
+
   return entries;
 }
-
-var wcHelperPlugin = new WcHelperPlugin({});
-
 
 module.exports = function(options) {
 
   jsonValidator.validate(options, optionsSchema, "Demo Configuration").throwOnError();
+
+  var entries = createEntriesFromOptions(options);
+
+  var wcHelperPlugin = new WcHelperPlugin({ bundles: Object.getOwnPropertyNames(entries),
+                                            supportLibsPath: options.supportLibsPath,
+                                            wcHelperBundle: options.wcHelperBundle });
 
   var config = {
 
@@ -54,7 +62,7 @@ module.exports = function(options) {
     /** *****************************************
      *  Main configuration for the web component
      */
-    entry: createEntriesFromOptions(options),
+    entry: entries,
 
     output: {
       path: path.resolve(__dirname, "dist/demo"),
@@ -75,7 +83,7 @@ module.exports = function(options) {
           use: [
             { loader: "file-loader", options: { name: "[path][name].[ext]", useRelativePath: false }},
             { loader: "extract-loader", options: { publicPath: "../" }},
-            { loader: "html-loader", options: {minimize: false, removeComments: false, collapseWhitespace: false }},
+            { loader: "html-loader", options: {minimize: false, removeComments: false, collapseWhitespace: false, attrs: ['img:src', 'link:href'] }},
             wcHelperPlugin.loader()
           ]
         },

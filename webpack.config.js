@@ -31,9 +31,9 @@ module.exports = function build(env) {
      *  Configuration for transpiling / bundling required external node modules
      */
     supportLibsConfig({
-      entries: { "polymer": "./node_modules/@polymer/polymer/polymer-element.html",
-                 "axios": "./node_modules/axios/lib/axios.js",
-                 "webpack-wc-helper": "./util/webpack-wc-helper.js" },
+      entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
+                 "axios-bundle": "./node_modules/axios/lib/axios.js",
+                 "webpack-wc-helper-bundle": "./util/webpack-wc-helper.js" },
       outputPath: "dist/demo",
       supportLibsPath: "support-libs"
     }),
@@ -44,10 +44,11 @@ module.exports = function build(env) {
     demoConfig({
       srcDir: path.resolve(__dirname, srcDir + "/demo"),
       outputPath: "dist/demo",
-      bundles: ["web-component.js"],
-      htmlFiles: ["./html/demo.html"],
-      resourceCopyOptions: { extensions: "png|jpg" }
+      htmlFiles: ["./html/demo.html"], // demo html files
+      resourceCopyOptions: { extensions: "png|jpg" }, // resources to copy
+      bundles: ["web-component-bundle", "polymer-bundle", "axios-bundle"], // bundles needed by web component
+      supportLibsPath: "../support-libs", // relative to outputPath
+      wcHelperBundle: "webpack-wc-helper-bundle" // web component helper bundle name
     })
-
   ];
 };

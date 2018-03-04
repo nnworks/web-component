@@ -37,6 +37,7 @@ class WCHelperPlugin {
     compiler.plugin('emit', function(compilation, callback) {
       // compilation.assets["webpack-wc-helper.js"] =
       // compilation.fileDependencies.push(path.join(compiler.context, template));
+      // delete compilation.assets[key]
 
       callback();
     }.bind(this));
