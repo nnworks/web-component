@@ -44,13 +44,11 @@ function WcHelperLoader(content, map, meta) {
 
   this.cacheable();
 
-  console.log("wc-helper-loader");
-
-  // const options = loaderUtils.getOptions(this) || {};
+  const options = loaderUtils.getOptions(this) || {};
   // validateOptions(schema, options, "resource-copier-loader");
   //
-  // // parse html in xml mode to leave all as is
-  // var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
+  // parse html in xml mode to leave all as is
+  var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
   //
   // // loop over all element selectors
   // for (let index = 0; index < options.resourceSelectors.length; index++) {
@@ -83,8 +81,9 @@ function WcHelperLoader(content, map, meta) {
   //   });
   // }
 
-  // return htmlDom.html();
-  return content;
+  // console.log(htmlDom.html());
+
+  return htmlDom.html();
 }
 
 // expose schema

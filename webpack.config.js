@@ -32,8 +32,7 @@ module.exports = function build(env) {
      */
     supportLibsConfig({
       entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
-                 "axios-bundle": "./node_modules/axios/lib/axios.js",
-                 "webpack-wc-helper-bundle": "./util/webpack-wc-helper.js" },
+                 "axios-bundle": "./node_modules/axios/lib/axios.js" },
       outputPath: "dist/demo",
       supportLibsPath: "support-libs"
     }),
@@ -46,9 +45,9 @@ module.exports = function build(env) {
       outputPath: "dist/demo",
       htmlFiles: ["./html/demo.html"], // demo html files
       resourceCopyOptions: { extensions: "png|jpg" }, // resources to copy
-      bundles: ["web-component-bundle", "polymer-bundle", "axios-bundle"], // bundles needed by web component
+      webComponentBundles: ["web-component-bundle"],
+      supportBundles: ["polymer-bundle", "axios-bundle"], // bundles needed by web component
       supportLibsPath: "../support-libs", // relative to outputPath
-      wcHelperBundle: "webpack-wc-helper-bundle" // web component helper bundle name
     })
   ];
 };

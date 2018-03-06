@@ -25,7 +25,6 @@ class WCHelperPlugin {
 
   loader() {
     var loaderSpec = { loader: require.resolve('./wc-helper-loader'), options: this.options };
-    console.log(loaderSpec);
     return loaderSpec;
   }
 
@@ -35,12 +34,30 @@ class WCHelperPlugin {
      * Build a module with all the required styles sheet files as dependencies
      */
     compiler.plugin('emit', function(compilation, callback) {
+      var assets = Object.getOwnPropertyNames(compilation.assets);
+
+      for (var assetIndex = 0; assetIndex < assets.length; assetIndex++) {
+        var key = assets[assetIndex];
+      //   if (this.options.compilation.assets[key]) {
+      //      delete compilation.assets[key];
+      //      console.log("delete " + key);
+      //   }
+      }
+
       // compilation.assets["webpack-wc-helper.js"] =
       // compilation.fileDependencies.push(path.join(compiler.context, template));
       // delete compilation.assets[key]
 
       callback();
     }.bind(this));
+  }
+
+  /**
+   * For gettting the pach
+   * @returns {string}
+   */
+  static getHelperJsPath() {
+    return __dirname + "/webpacked-wc-helper.js";
   }
 }
 
