@@ -4,6 +4,7 @@ const cheerio = require("cheerio");
 const loaderUtils = require("loader-utils");
 const validateOptions = require("schema-utils");
 
+const WCHELPER_SELECTOR = "wc-helper";
 
 const schema = {
   $schema: "http://json-schema.org/draft-06/schema#",
@@ -49,17 +50,22 @@ function WcHelperLoader(content, map, meta) {
   //
   // parse html in xml mode to leave all as is
   var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
-  //
-  // // loop over all element selectors
-  // for (let index = 0; index < options.resourceSelectors.length; index++) {
-  //   var selector = options.resourceSelectors[index];
-  //   var elements = htmlDom(selector.selector);
-  //   for (let index = 0; index < elements.length; index++) {
-  //     let element = elements[index];
-  //     var resourceUri = htmlDom(element).attr(selector.attr);
-  //     console.log("resource uri: " + resourceUri);
-  //   }
-  // }
+
+    var elements = htmlDom(WCHELPER_SELECTOR);
+
+    for (let index = 0; index < elements.length; index++) {
+      let element = elements[index];
+      var bundles = htmlDom(element).attr("bundles");
+      console.log("wc bundles: " + bundles);
+
+      var helperTag = " <script src=\"support-libs/webpack-wc-helper-bundle.js\" wc-location=\"support-libs/webcomponentsjs\" bundles=\"support-libs/axios-bundle.js, support-libs/polymer-bundle.js, web-component-bundle.js\">"
+      + "</script>";
+
+      // insert wc-helper script
+      htmlDom(element).replaceWith(helperTag);
+      htmlDom(element).attr("src", bundles);
+      htmlDom(element).attr("bundles", bundles);
+    }
 
   // if (cssLinkElements) {
   //   var elementReplaced = false;

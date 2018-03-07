@@ -1,5 +1,6 @@
 const path = require("path");
 const WcHelperPlugin = require("./util/plugins/wc-helper-plugin/wc-helper-plugin");
+const RemoveAssetPlugin = require("webpack-remove-assets-plugin");
 const jsonValidator = require("./util/json-validator");
 
 
@@ -44,6 +45,16 @@ function createEntriesFromOptions(options) {
   return entries;
 }
 
+function createRegExpFromEntries(entries) {
+  var chunks = Object.getOwnPropertyNames(entries).map((property) => property + ".js");
+  var regExp = "^(";
+  for (let index = 0; index < chunks.length; index++) {
+    regExp += chunks[index];
+  }
+
+  regExp += ")";
+}
+
 module.exports = function(options) {
 
   jsonValidator.validate(options, optionsSchema, "Demo Configuration").throwOnError();
@@ -68,7 +79,7 @@ module.exports = function(options) {
 
     output: {
       path: path.resolve(__dirname, "dist/demo"),
-      filename: "[name]-bundle.js",
+      filename: "[name].js",
     },
 
     resolve: {
@@ -100,7 +111,7 @@ module.exports = function(options) {
     },
 
     plugins: [
-      wcHelperPlugin,
+      new RemoveAssetPlugin({  })
     ],
 
     // Will be put in the modules dist folder package.json if the generate-package-json-webpack-plugin

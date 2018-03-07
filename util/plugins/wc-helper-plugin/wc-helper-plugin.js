@@ -31,22 +31,19 @@ class WCHelperPlugin {
   apply(compiler) {
 
     /**
-     * Build a module with all the required styles sheet files as dependencies
+     * remove the Build a module with all the required styles sheet files as dependencies
      */
     compiler.plugin('emit', function(compilation, callback) {
       var assets = Object.getOwnPropertyNames(compilation.assets);
 
       for (var assetIndex = 0; assetIndex < assets.length; assetIndex++) {
-        var key = assets[assetIndex];
-      //   if (this.options.compilation.assets[key]) {
-      //      delete compilation.assets[key];
-      //      console.log("delete " + key);
-      //   }
+        for (var rmChunkIndex = 0; rmChunkIndex < this.options.removeChunks.length; rmChunkIndex++) {
+          var assetKey = assets[assetIndex];
+          if (assetKey.startsWith(this.options.removeChunks[rmChunkIndex])) {
+            delete compilation.assets[assetKey];
+          }
+        }
       }
-
-      // compilation.assets["webpack-wc-helper.js"] =
-      // compilation.fileDependencies.push(path.join(compiler.context, template));
-      // delete compilation.assets[key]
 
       callback();
     }.bind(this));

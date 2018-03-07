@@ -38,7 +38,8 @@
     "web-component-tester": "latest",
     "webpack": "latest",
     "webpack-bundle-analyzer": "^2.9.2",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "latest",
+    "webpack-remove-assets-plugin": "^1.0.0"
   },
   "scripts": {
     "build": "webpack --env.development",
