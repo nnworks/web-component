@@ -1,5 +1,6 @@
 "use strict";
 
+const path = require("path");
 const cheerio = require("cheerio");
 const loaderUtils = require("loader-utils");
 const validateOptions = require("schema-utils");
@@ -58,13 +59,15 @@ function WcHelperLoader(content, map, meta) {
       var bundles = htmlDom(element).attr("bundles");
       console.log("wc bundles: " + bundles);
 
-      var helperTag = " <script src=\"support-libs/webpack-wc-helper-bundle.js\" wc-location=\"support-libs/webcomponentsjs\" bundles=\"support-libs/axios-bundle.js, support-libs/polymer-bundle.js, web-component-bundle.js\">"
-      + "</script>";
+      let relativePath = path.relative(path.dirname(this.resourcePath), __dirname)
+
+      let id = "webpacked-wc-helper-" + index;
+      let src = relativePath + "/webpacked-wc-helper.js";
+      let wcPath = "gfsdf";
+      var helperTag = "<script id=\"" + id + "\" language=\"javascript\" src=\"" + src + "\" bundles=\"" + bundles + "\" wc-location=\"" + "dfd"+ "\"></script>";
 
       // insert wc-helper script
-      htmlDom(element).replaceWith(helperTag);
-      htmlDom(element).attr("src", bundles);
-      htmlDom(element).attr("bundles", bundles);
+      //htmlDom(element).replaceWith(helperTag);
     }
 
   // if (cssLinkElements) {

@@ -2,7 +2,7 @@
 
 const cheerio = require("cheerio");
 const loaderUtils = require("loader-utils");
-const jsonValidator = require("../json-validator");
+const jsonValidator = require("../../json-validator");
 
 const CSS_STYLE_LINK_ELM = "link[rel=\"stylesheet\"]";
 

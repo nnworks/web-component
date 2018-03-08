@@ -3,7 +3,7 @@
 const sass = require("node-sass");
 const cheerio = require("cheerio");
 const loaderUtils = require("loader-utils");
-const jsonValidator = require("../json-validator");
+const jsonValidator = require("../../json-validator");
 
 const SCSS_STYLE_ELM = "style[lang=\"scss\"]";
 
