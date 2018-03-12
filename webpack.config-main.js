@@ -166,7 +166,6 @@ module.exports = function(options) {
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
       new ExtractTextPlugin({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath, allChunks: true }),
-
       // creates a bundle content report
       new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false, reportFilename: "bundle-content-report.html" }),
     ],

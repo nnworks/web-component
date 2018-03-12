@@ -1,9 +1,18 @@
-(function () {
-  var scripts = document.getElementsByTagName("script");
-  var me = scripts[scripts.length - 1];
+
+function addScript(beforeElement, src, onloadCallback = null) {
+  let scriptTag = document.createElement("script");
+  scriptTag.src = src;
+  scriptTag.async = false;
+  scriptTag.onload = onloadCallback;
+  beforeElement.parentElement.insertBefore(scriptTag, beforeElement);
+}
+
+function loadBundles() {
+  let scripts = document.getElementsByTagName("script");
+  let me = scripts[scripts.length - 1];
 
   // get location of the webcomponentsjs files
-  var webcomponentsLocation = me.getAttribute("wc-location");
+  let webcomponentsLocation = me.getAttribute("wc-location");
   if (webcomponentsLocation == null) {
     console.log("wc-location attribute not set");
   }
@@ -29,13 +38,13 @@
       console.log("bundles attribute not set (',' separated bundle files)");
     }
 
-    var bundles = bundleAttr.split(",");
+    let bundles = bundleAttr.split(",");
     for (let index = 0; index < bundles.length; index++) {
       addScript(me, bundles[index], onloadCounter);
     }
 
     // fire WebComponentsReady event again when all bundles are loaded
-    var loadCounter = 0;
+    let loadCounter = 0;
     function onloadCounter(event) {
       loadCounter++;
       if (bundles.length == loadCounter) {
@@ -44,12 +53,6 @@
       }
     }
   }, true);
+}
 
-  function addScript(beforeElement, src, onloadCallback = null) {
-    var scriptTag = document.createElement("script");
-    scriptTag.src = src;
-    scriptTag.async = false;
-    scriptTag.onload = onloadCallback;
-    beforeElement.parentElement.insertBefore(scriptTag, beforeElement);
-  }
-})();
+loadBundles();

@@ -67,7 +67,7 @@ function WcHelperLoader(content, map, meta) {
       var helperTag = "<script id=\"" + id + "\" language=\"javascript\" src=\"" + src + "\" bundles=\"" + bundles + "\" wc-location=\"" + "dfd"+ "\"></script>";
 
       // insert wc-helper script
-      //htmlDom(element).replaceWith(helperTag);
+      htmlDom(element).replaceWith(helperTag);
     }
 
   // if (cssLinkElements) {
