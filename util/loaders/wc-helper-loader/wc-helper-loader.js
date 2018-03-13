@@ -56,15 +56,18 @@ function WcHelperLoader(content, map, meta) {
 
     for (let index = 0; index < elements.length; index++) {
       let element = elements[index];
-      var bundles = htmlDom(element).attr("bundles");
-      console.log("wc bundles: " + bundles);
+      var supportLibBundles = htmlDom(element).attr("supportLibBundles");
+      var webComponentBundles = htmlDom(element).attr("webComponentBundles");
+
+      // prepend supportlibs
+      console.log("wc bundles: " + supportLibBundles);
 
       let relativePath = path.relative(path.dirname(this.resourcePath), __dirname)
 
       let id = "webpacked-wc-helper-" + index;
       let src = relativePath + "/webpacked-wc-helper.js";
       let wcPath = "gfsdf";
-      var helperTag = "<script id=\"" + id + "\" language=\"javascript\" src=\"" + src + "\" bundles=\"" + bundles + "\" wc-location=\"" + "dfd"+ "\"></script>";
+      var helperTag = "<script id=\"" + id + "\" language=\"javascript\" src=\"" + src + "\" bundles=\"" + supportLibBundles + "\" wc-location=\"" + "dfd"+ "\"></script>";
 
       // insert wc-helper script
       htmlDom(element).replaceWith(helperTag);

@@ -14,7 +14,7 @@ const optionsSchema = {
       description: "entries object",
       type: "object"
     },
-    supportLibsPath: {
+    outputPath: {
       description: "directory where the output is send to",
       type: "string"
     },
@@ -32,7 +32,7 @@ module.exports = function(options) {
     entry: options.entries,
 
     output: {
-      path: path.resolve(__dirname, "dist/" + options.supportLibsPath),
+      path: path.resolve(__dirname, options.outputPath),
       filename: "[name].js",
       library: "[name]",
       libraryTarget: "umd",

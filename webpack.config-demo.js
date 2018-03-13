@@ -119,7 +119,7 @@ module.exports = function(options) {
         {
           test: /\.js$/,
           use: [
-            { loader: "file-loader", options: { name: "gbgbg/[name].[ext]", useRelativePath: false }}
+            { loader: "file-loader", options: { name: "[name].[ext]", useRelativePath: false }}
           ]
         }
       ]

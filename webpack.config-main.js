@@ -67,7 +67,7 @@ module.exports = function(options) {
     entry: options.entries,
 
     output: {
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, options.outputPath),
       filename: "[name].js",
     },
 

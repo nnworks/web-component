@@ -5,6 +5,7 @@ var supportLibsConfig = require("./webpack.config-supportlibs");
 
 
 var srcDir = "src";
+var outputDir = "dist";
 
 
 module.exports = function build(env) {
@@ -21,7 +22,7 @@ module.exports = function build(env) {
     mainConfig({
       srcDir: path.resolve(__dirname, srcDir),
       entries: { "web-component-bundle": "./html/web-component.html" },
-      outputPath: "dist/demo",
+      outputPath: outputDir,
       linkedStyleBundlerLoaderOptions: { cssBundlePath: "css/styles.css" },
       inlineSassTranspilerOptions: { scssBasePaths: ["src/scss"] },
       resourceCopyOptions: { extensions: "png|jpg" }
@@ -33,8 +34,7 @@ module.exports = function build(env) {
     supportLibsConfig({
       entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
                  "axios-bundle": "./node_modules/axios/lib/axios.js" },
-      outputPath: "dist/demo",
-      supportLibsPath: "support-libs"
+      outputPath:  path.resolve(outputDir, "support-libs")
     }),
 
     /** *****************************************
@@ -42,11 +42,11 @@ module.exports = function build(env) {
      */
     demoConfig({
       srcDir: path.resolve(__dirname, srcDir + "/demo"),
-      outputPath: "dist/demo",
+      outputPath: "dist", // path where
+      demoPath: "demo",
       htmlFiles: ["./html/demo.html"], // demo html files
       resourceCopyOptions: { extensions: "png|jpg" }, // resources to copy
       webComponentBundles: ["web-component-bundle"],
-      supportBundles: ["polymer-bundle", "axios-bundle"], // bundles needed by web component
       supportLibsPath: "../support-libs", // relative to outputPath
     })
   ];
