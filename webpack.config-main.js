@@ -81,7 +81,8 @@ module.exports = function(options) {
       modules: [
         "node_modules",
         path.resolve(__dirname, "util/loaders/inline-sass-transpiler"),
-        path.resolve(__dirname, "util/loaders/linked-style-bundler-loader")
+        path.resolve(__dirname, "util/loaders/linked-style-bundler-loader"),
+        path.resolve(__dirname, "util/loaders")
       ]
     },
 
@@ -93,13 +94,7 @@ module.exports = function(options) {
           test: /\.html$/,
           // Chained loaders run last to first.
           use: [
-            {
-              loader: "babel-loader",
-              options: {
-                presets: ["env"],
-                compact: true // use compact: false to suppress removing whitespaces
-              }
-            },
+            { loader: "babel-loader", options: { presets: ["env"], compact: true }},
             { loader: "polymer-webpack-loader", options: {} },
             { loader: "inline-sass-transpiler", options: options.inlineSassTranspilerOptions },
             { loader: "linked-style-bundler-loader", options: options.linkedStyleBundlerLoaderOptions }
@@ -112,13 +107,7 @@ module.exports = function(options) {
           // all files that end in .js
           test: /\.js$/,
           use: [
-            {
-              loader: "babel-loader",
-              options: {
-                presets: ["babel-preset-env"],
-                plugins: ["babel-plugin-transform-runtime"],
-                compact: true // use compact: false to suppress removing whitespaces
-              }}
+            { loader: "babel-loader", options: { presets: ["babel-preset-env"], plugins: ["babel-plugin-transform-runtime"], compact: true }}
           ],
           // Exclude bower_components and node_modules from transpilation except for polymer-webpack-loader:
           exclude: /node_modules\/(?!polymer-webpack-loader\/)|\/bower_components\/.*/
@@ -129,7 +118,8 @@ module.exports = function(options) {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
             use: [
-              { loader: "css-loader", options: { } },
+              { loader: "monitoring-loader", options: { showContent: true }},
+              { loader: "css-loader", options: { }},
             ]
           })
         },

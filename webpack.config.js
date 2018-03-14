@@ -19,23 +19,23 @@ module.exports = function build(env) {
     /** *****************************************
      *  Main configuration for the web component
      */
-    mainConfig({
-      srcDir: path.resolve(__dirname, srcDir),
-      entries: { "web-component-bundle": "./html/web-component.html" },
-      outputPath: outputDir,
-      linkedStyleBundlerLoaderOptions: { cssBundlePath: "css/styles.css" },
-      inlineSassTranspilerOptions: { scssBasePaths: ["src/scss"] },
-      resourceCopyOptions: { extensions: "png|jpg" }
-    }),
+    // mainConfig({
+    //   srcDir: path.resolve(__dirname, srcDir),
+    //   entries: { "web-component-bundle": "./html/web-component.html" },
+    //   outputPath: outputDir,
+    //   linkedStyleBundlerLoaderOptions: { cssBundlePath: "css/styles.css" },
+    //   inlineSassTranspilerOptions: { scssBasePaths: ["src/scss"] },
+    //   resourceCopyOptions: { extensions: "png|jpg" }
+    // }),
 
     /** *****************************************
      *  Configuration for transpiling / bundling required external node modules
      */
-    supportLibsConfig({
-      entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
-                 "axios-bundle": "./node_modules/axios/lib/axios.js" },
-      outputPath:  path.resolve(outputDir, "support-libs")
-    }),
+    // supportLibsConfig({
+    //   entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
+    //              "axios-bundle": "./node_modules/axios/lib/axios.js" },
+    //   outputPath:  path.resolve(outputDir, "support-libs")
+    // }),
 
     /** *****************************************
      * Configuration for generating demo files to show the component

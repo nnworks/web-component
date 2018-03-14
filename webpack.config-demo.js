@@ -103,7 +103,6 @@ module.exports = function(options) {
           use: [
             { loader: "file-loader", options: { name: "[path][name].[ext]", useRelativePath: false }},
             { loader: "extract-loader", options: { publicPath: "../" }},
-            { loader: "monitoring-loader", options: { showContent: true }},
             { loader: "html-loader", options: { minimize: false, removeComments: false, collapseWhitespace: false, attrs: ["img:src", "link:href", "script:src"] }},
             { loader: "wc-helper-loader", options: { supportLibsPath: options.supportLibsPath }}
           ]

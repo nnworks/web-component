@@ -45,6 +45,7 @@ const schema = {
 function WcHelperLoader(content, map, meta) {
 
   this.cacheable();
+  var callback = this.async();
 
   const options = loaderUtils.getOptions(this) || {};
   // validateOptions(schema, options, "resource-copier-loader");
@@ -52,50 +53,32 @@ function WcHelperLoader(content, map, meta) {
   // parse html in xml mode to leave all as is
   var htmlDom = cheerio.load(content, {normalizeWhitespace: false, xmlMode: true});
 
-    var elements = htmlDom(WCHELPER_SELECTOR);
+  var elements = htmlDom(WCHELPER_SELECTOR);
 
-    for (let index = 0; index < elements.length; index++) {
-      let element = elements[index];
-      var supportLibBundles = htmlDom(element).attr("supportLibBundles");
-      var webComponentBundles = htmlDom(element).attr("webComponentBundles");
+  for (let index = 0; index < elements.length; index++) {
+    let element = elements[index];
+    let supportLibBundles = htmlDom(element).attr("supportLibBundles");
+    let webComponentBundles = htmlDom(element).attr("webComponentBundles");
 
-      // prepend supportlibs
-      console.log("wc bundles: " + supportLibBundles);
+    // prepend supportlibs
+    console.log("wc bundles: " + supportLibBundles);
 
-      let relativePath = path.relative(path.dirname(this.resourcePath), __dirname)
+    let relativePath = path.relative(path.dirname(this.resourcePath), __dirname)
+    let id = "webpacked-wc-helper-" + index;
+    let src = relativePath + "/webpacked-wc-helper.js";
 
-      let id = "webpacked-wc-helper-" + index;
-      let src = relativePath + "/webpacked-wc-helper.js";
-      let wcPath = "gfsdf";
-      var helperTag = "<script id=\"" + id + "\" language=\"javascript\" src=\"" + src + "\" bundles=\"" + supportLibBundles + "\" wc-location=\"" + "dfd"+ "\"></script>";
+    this.loadModule("file-loader?name=[name].[ext]&useRelativePath=false!" + src, function(err, source, sourceMap, module) {
+      console.log(source);
+      let helperTag = "<script id=\"" + id + "\" language=\"javascript\" src=\"" + src + "\" bundles=\"" + supportLibBundles + "\" wc-location=\"" + "dfd"+ "\"></script>";
 
       // insert wc-helper script
       htmlDom(element).replaceWith(helperTag);
-    }
 
-  // if (cssLinkElements) {
-  //   var elementReplaced = false;
-  //   cssLinkElements.each(function(i, element) {
-  //     var cssHref = htmlDom(element).attr("href");
-  //     if (cssHref) {
-  //       // add  require for css
-  //       htmlDom(element).after("\n<script> require(\"" + cssHref + "\"); </script>");
-  //
-  //       if(!elementReplaced) {
-  //         // replace href attribute
-  //         htmlDom(element).attr("href", options.cssBundlePath);
-  //         elementReplaced = true;
-  //       } else {
-  //         // remove complete tag
-  //         htmlDom(element).replaceWith("<!-- " + cssHref + " -->");
-  //       }
-  //     }
-  //   });
-  // }
+      let result = htmlDom.html();
 
-  // console.log(htmlDom.html());
-
-  return htmlDom.html();
+      callback(null, result, map, meta);
+    });
+  }
 }
 
 // expose schema

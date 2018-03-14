@@ -35,7 +35,7 @@
     "polymer-webpack-loader": "latest",
     "sass-loader": "latest",
     "web-component-tester": "latest",
-    "webpack": "latest",
+    "webpack": "3.8.1",
     "webpack-cli": "latest",
     "webpack-bundle-analyzer": "latest",
     "webpack-dev-server": "latest",
