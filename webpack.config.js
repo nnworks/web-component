@@ -31,22 +31,23 @@ module.exports = function build(env) {
     /** *****************************************
      *  Configuration for transpiling / bundling required external node modules
      */
-    // supportLibsConfig({
-    //   entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
-    //              "axios-bundle": "./node_modules/axios/lib/axios.js" },
-    //   outputPath:  path.resolve(outputDir, "support-libs")
-    // }),
+    supportLibsConfig({
+      entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
+                 "axios-bundle": "./node_modules/axios/lib/axios.js" },
+      outputPath:  path.resolve(outputDir, "support-libs")
+    }),
 
     /** *****************************************
      * Configuration for generating demo files to show the component
      */
     demoConfig({
       srcDir: path.resolve(__dirname, srcDir + "/demo"),
-      outputPath: "dist", // path where
+      outputPath: "dist/demo", // path where demo should be put
       demoPath: "demo",
       htmlFiles: ["./html/demo.html"], // demo html files
-      resourceCopyOptions: { extensions: "png|jpg" }, // resources to copy
+      resourceCopyOptions: { extensions: "png|jpg|js" }, // resources to copy
       webComponentBundles: ["web-component-bundle"],
+      webComponentJsPath: "../support-libs/webcomponentsjs", // relative to outputPath
       supportLibsPath: "../support-libs", // relative to outputPath
     })
   ];

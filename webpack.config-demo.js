@@ -103,8 +103,8 @@ module.exports = function(options) {
           use: [
             { loader: "file-loader", options: { name: "[path][name].[ext]", useRelativePath: false }},
             { loader: "extract-loader", options: { publicPath: "../" }},
+            { loader: "wc-helper-loader", options: { supportLibsPath: options.supportLibsPath }},
             { loader: "html-loader", options: { minimize: false, removeComments: false, collapseWhitespace: false, attrs: ["img:src", "link:href", "script:src"] }},
-            { loader: "wc-helper-loader", options: { supportLibsPath: options.supportLibsPath }}
           ]
         },
 
@@ -114,13 +114,6 @@ module.exports = function(options) {
             { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}}
           ]
         },
-
-        {
-          test: /\.js$/,
-          use: [
-            { loader: "file-loader", options: { name: "[name].[ext]", useRelativePath: false }}
-          ]
-        }
       ]
     },
 
