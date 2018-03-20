@@ -102,8 +102,8 @@ module.exports = function(options) {
           test: /\.html$/,
           use: [
             { loader: "file-loader", options: { name: "[path][name].[ext]", useRelativePath: false }},
-            { loader: "extract-loader", options: { publicPath: options.outputPath }},
-            { loader: "wc-helper-loader", options: { supportLibsPath: options.supportLibsPath, webComponentsJsPath: options.webComponentsJsPath, publicPath: options.outputPath }},
+            { loader: "extract-loader", options: { publicPath: options.publicPath }},
+            { loader: "wc-helper-loader", options: { supportLibsPath: options.supportLibsPath, webComponentsJsPath: options.webComponentsJsPath, publicPath: options.publicPath }},
             { loader: "html-loader", options: { minimize: false, removeComments: false, collapseWhitespace: false, attrs: ["img:src", "link:href", "script:src"] }},
           ]
         },

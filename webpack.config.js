@@ -43,11 +43,11 @@ module.exports = function build(env) {
     demoConfig({
       srcDir: path.resolve(__dirname, srcDir + "/demo"),
       outputPath: "dist/demo", // path where demo should be put
-      publicPath: "..", // base path for the build relatively to the outputPath
+      publicPath: "../", // base path for the 'common' build relatively to the outputPath
       htmlFiles: ["./html/demo.html"], // demo html files
-      resourceCopyOptions: { extensions: "png|jpg|js" }, // resources to copy,
-      webComponentJsPath: "support-libs/webcomponentsjs", // relative to the publicPath
-      supportLibsPath: "support-libs", // relative to public
+      resourceCopyOptions: { extensions: "png|jpg|js" }, // resources to copy when encountered in demo page(s),
+      webComponentsJsPath: "support-libs/webcomponentsjs", // path to webcomponentjs files, relative to the publicPath
+      supportLibsPath: "support-libs", // path to support libraries, relative to publicPath
     })
   ];
 };
