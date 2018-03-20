@@ -19,14 +19,14 @@ module.exports = function build(env) {
     /** *****************************************
      *  Main configuration for the web component
      */
-    // mainConfig({
-    //   srcDir: path.resolve(__dirname, srcDir),
-    //   entries: { "web-component-bundle": "./html/web-component.html" },
-    //   outputPath: outputDir,
-    //   linkedStyleBundlerLoaderOptions: { cssBundlePath: "css/styles.css" },
-    //   inlineSassTranspilerOptions: { scssBasePaths: ["src/scss"] },
-    //   resourceCopyOptions: { extensions: "png|jpg" }
-    // }),
+    mainConfig({
+      srcDir: path.resolve(__dirname, srcDir),
+      entries: { "web-component-bundle": "./html/web-component.html" },
+      outputPath: outputDir,
+      linkedStyleBundlerLoaderOptions: { cssBundlePath: "css/styles.css" },
+      inlineSassTranspilerOptions: { scssBasePaths: ["src/scss"] },
+      resourceCopyOptions: { extensions: "png|jpg" }
+    }),
 
     /** *****************************************
      *  Configuration for transpiling / bundling required external node modules
@@ -43,12 +43,11 @@ module.exports = function build(env) {
     demoConfig({
       srcDir: path.resolve(__dirname, srcDir + "/demo"),
       outputPath: "dist/demo", // path where demo should be put
-      demoPath: "demo",
+      publicPath: "..", // base path for the build relatively to the outputPath
       htmlFiles: ["./html/demo.html"], // demo html files
-      resourceCopyOptions: { extensions: "png|jpg|js" }, // resources to copy
-      webComponentBundles: ["web-component-bundle"],
-      webComponentJsPath: "../support-libs/webcomponentsjs", // relative to outputPath
-      supportLibsPath: "../support-libs", // relative to outputPath
+      resourceCopyOptions: { extensions: "png|jpg|js" }, // resources to copy,
+      webComponentJsPath: "support-libs/webcomponentsjs", // relative to the publicPath
+      supportLibsPath: "support-libs", // relative to public
     })
   ];
 };

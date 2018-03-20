@@ -50,23 +50,22 @@ function createModuleOfString(src, requirePaths) {
 }
 
 /**
- * Prefix bundles with support lib path
- * @param bundles
- * @param supportLibsPath
- * @returns {string}
+ * Prefix supportBundles with support lib path
+ * @param supportBundles Array
+ * @param supportLibsPath path to support libraries folder, relative to the file that is passing through this loader.
+ * @returns comma separated string with supportBundles
  */
-function createBundleString(bundles, supportLibsPath) {
-  let bundleString = "";
-  for (let index = 0; index < bundles.length; index++) {
-    if (index > 0) bundleString += ", ";
-    bundleString += supportLibsPath + "/" + bundles[index].trim();
-  }
-
-  return bundleString;
+function createSupportBundleString(supportBundles, supportLibsPath) {
+  return supportBundles.map((bundle) =>  supportLibsPath + "/" + bundle.trim());
 }
 
-function replaceWCHelperTag(htmlSrcJs, options) {
+function createWcBundleString(wcBundles, distPath) {
+  return wcBundles.map((bundle) =>  distPath + "/" + bundle.trim());
+}
 
+function replaceWCHelperTag(htmlSrcJs, publicPath, publicPathRelToResource, options) {
+
+  // create sandbox with just enough to let the html be evaluated...
   let requirePaths = [];
   let sandbox = {
     module: function(){},
@@ -93,12 +92,15 @@ function replaceWCHelperTag(htmlSrcJs, options) {
     let webComponentBundles = htmlDom(element).attr("webComponentBundles");
     let id = "webpacked-wc-helper-" + index;
 
+    let bundles = createSupportBundleString(supportLibBundles.split(","), outputPathRelToResource + "/" + options.supportLibsPath);
+    bundles = bundles.concat(createWcBundleString(webComponentBundles.split(","), publicPathRelToResource));
+
     let helperTag =
       "<script id=\"" + id
-      + "\" language=\"javascript\" src=\"" + WCHELPER_JS
-      + "\" bundles=\"" + createBundleString(supportLibBundles.split(","), options.supportLibsPath)
-      + "\" wc-location=\"" + options.webComponentJsPath
-      + "\"></script>";
+      + "\" language=\"javascript\" src=\"" + outputPathRelToResource + "/" + WCHELPER_JS
+      + "\" bundles=\"" + bundles.join(", ")
+      + "\" wc-location=\"" + outputPathRelToResource + "/" + options.webComponentsJsPath
+      + "\"> </script>";
 
     // insert wc-helper script
     htmlDom(element).replaceWith(helperTag);
@@ -128,8 +130,11 @@ function wcHelperLoader(srcToProcess, map, meta) {
   let relativePath = path.relative(path.dirname(this.resourcePath), __dirname)
   let helperJs = "!file-loader?name=[name].js&useRelativePath=false!" + relativePath + "/" + WCHELPER_JS;
 
+  var outputPathRelToResource = path.relative(path.dirname(this.resourcePath), this.options.context);
+  var publicPathRelToResource = path.resolve(outputPathRelToResource, options.publicPath);
+
   this.loadModule(helperJs, (err, moduleSource, sourceMap, module) => {
-    let result = replaceWCHelperTag(srcToProcess, options);
+    let result = replaceWCHelperTag(srcToProcess, outputPathRelToResource, publicPathRelToResource, options);
     asyncCallback(null, result, map, meta);
   });
 }
