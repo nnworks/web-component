@@ -61,6 +61,7 @@ module.exports = function(options) {
   jsonValidator.validate(options, optionsSchema, "Main Configuration").throwOnError();
 
   var config = {
+    stats: "normal",
 
     context: (typeof options.srcDir !== "undefined")? options.srcDir : "",
 
@@ -118,7 +119,6 @@ module.exports = function(options) {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
             use: [
-              { loader: "monitoring-loader", options: { showContent: true }},
               { loader: "css-loader", options: { }},
             ]
           })

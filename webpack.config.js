@@ -32,8 +32,8 @@ module.exports = function build(env) {
      *  Configuration for transpiling / bundling required external node modules
      */
     supportLibsConfig({
-      entries: { "polymer-bundle": "./node_modules/@polymer/polymer/polymer-element.html",
-                 "axios-bundle": "./node_modules/axios/lib/axios.js" },
+      entries: { "polymer": "./node_modules/@polymer/polymer/polymer-element.html",
+                 "axios": "./node_modules/axios/lib/axios.js" },
       outputPath:  path.resolve(outputDir, "support-libs")
     }),
 

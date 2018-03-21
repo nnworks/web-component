@@ -34,7 +34,7 @@ const optionsSchema = {
 /**
  * Create entries set from array
  * @param options
- * @returns entries object
+ * @returns created entries object
  */
 function createEntriesFromOptions(options) {
   var entries = {};
@@ -57,7 +57,6 @@ function createRegExpFromEntries(entries) {
 
   regExpString += ")";
 
-  console.log(regExpString);
   return new RegExp(regExpString);
 }
 
@@ -68,6 +67,8 @@ module.exports = function(options) {
   var entries = createEntriesFromOptions(options);
 
   var config = {
+
+    stats: "normal",
 
     context: (typeof options.srcDir !== "undefined")? options.srcDir : "",
 

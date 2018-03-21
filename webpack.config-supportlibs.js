@@ -26,6 +26,8 @@ module.exports = function(options) {
   jsonValidator.validate(options, optionsSchema).throwOnError();
 
   return {
+    stats: "normal",
+
     /** *****************************************
      *  Configuration for transpiling / bundling required node modules
      */
@@ -33,7 +35,7 @@ module.exports = function(options) {
 
     output: {
       path: path.resolve(__dirname, options.outputPath),
-      filename: "[name].js",
+      filename: "[name]-bundle.js",
       library: "[name]",
       libraryTarget: "umd",
     },
