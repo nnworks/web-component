@@ -3,6 +3,7 @@
 <style lang="scss">
   .localScss {
     padding-left: 70px;
+    /* urls are resolved relative to the web-component location */
     background-image: url("../resources/images/light-dom.png");
     background-repeat: no-repeat;
     background-position: left;
@@ -22,6 +23,7 @@
     <!-- inside web-component dom-module -->
     <style lang="scss">
       .localScss {
+        /* urls are resolved relative to the web-component location */
         background-image: url("../resources/images/shadow-dom.png");
         background-repeat: no-repeat;
         background-position: left;
@@ -68,13 +70,13 @@
 
       :host {
         display: block;
-        animation: fade-in 100ms linear;
+        animation: fade-in 500ms linear;
       }
 
       .spanningClass {
         color: blue;
         font-weight: 800;
-        animation: moveText 1000ms cubic-bezier(0.42, 0, 0.58, 1), fade-in 1000ms cubic-bezier(0.42, 0, 0.58, 1);
+        animation: moveText 1000ms cubic-bezier(0.42, 0, 0.58, 1), fade-in 500ms cubic-bezier(0.42, 0, 0.58, 1);
         position: relative;
         left: 0px;
         top: 0px;
@@ -89,10 +91,10 @@
 
     </style>
 
-    <img src="../resources/images/web-component-image.png" />
-
-
     <h3 class="localScss">{{elementName}}</h3>
+
+    <!-- image src is normally not relative to the web-component directory, therefore a calculated value is used -->
+    <img src="[[imgSrc]]"/>
 
     <br>
 
@@ -134,21 +136,25 @@
      * @demo demo/demo.html
      */
     class WebComponent extends Polymer.Element {
-      static get is() {
-        return 'web-component';
-      }
-
       constructor() {
         super();
 
+        /**
+         * properties
+         */
         this.elementName = 'web-component'
+        this.imgSrc = this.resolveUrl("../resources/images/web-component-image.png");
         this.component = {
           componentName: "StockComponent",
           counter: 1
-        }
+        };
 
         console.log("web-component constructed");
       };
+
+      static get is() {
+        return 'web-component';
+      }
 
       connectedCallback() {
         super.connectedCallback();
