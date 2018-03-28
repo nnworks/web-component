@@ -1,24 +1,36 @@
 
+<!-- outside web-component dom-module -->
 <style lang="scss">
   .localScss {
-    background-color: red;
-    background-image: url("../resources/images/biohazard2.png");
+    padding-left: 70px;
+    background-image: url("../resources/images/light-dom.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    border: 1px dotted blue;
     color: green;
     @import "test";
   }
 </style>
 
+<link rel="stylesheet" type="text/css" href="../css/test.css"/>
+<link rel="stylesheet" type="text/css" href="../scss/test.scss"/>
+
+
 <dom-module id="web-component">
-
-  <link rel="stylesheet" type="text/css" href="../css/test.css"/>
-  <link rel="stylesheet" type="text/css" href="../scss/test.scss"/>
-
   <template>
-    <style>
 
+    <!-- inside web-component dom-module -->
+    <style lang="scss">
       .localScss {
+        background-image: url("../resources/images/shadow-dom.png");
+        background-repeat: no-repeat;
+        background-position: left;
         border: 1px solid black;
+        padding-left: 70px;
       }
+    </style>
+
+    <style>
 
       @keyframes fade-in {
         0% {
@@ -34,20 +46,24 @@
           left: 0px;
           top: 0px;
         }
-        50% {
-          left: 10px;
-          top: 250px;
+        25% {
+          left: 100px;
+          top: 50px;
+        }
+        75% {
+          left: 100px;
+          top: -0px;
         }
         100% {
-          left: 100px;
-          top: 300px;
+          left: 0px;
+          top: 0px;
         }
       }
 
       h3 {
         font-family: "Courier";
         font-size: 12pt;
-        font-style: oblique;
+        color: red;
       }
 
       :host {
@@ -60,8 +76,8 @@
         font-weight: 800;
         animation: moveText 1000ms cubic-bezier(0.42, 0, 0.58, 1), fade-in 1000ms cubic-bezier(0.42, 0, 0.58, 1);
         position: relative;
-        left: 100px;
-        top: 300px;
+        left: 0px;
+        top: 0px;
       }
 
       /* DOESN'T WORK (can only select top-level nodes).
@@ -73,7 +89,7 @@
 
     </style>
 
-    <img src="../resources/images/biohazard1.png" />
+    <img src="../resources/images/web-component-image.png" />
 
 
     <h3 class="localScss">{{elementName}}</h3>
@@ -89,23 +105,26 @@
       subject:
       <slot name="subject"></slot>
     </p>
-    <div class="spanningClass">
-      spanning:
-      <slot name="spanning"/>
-    </div>
+
+    <p>
+      <div class="spanningClass">
+        spanning:
+        <slot name="spanning"/>
+      </div>
+    </p>
 
     <input type="text"  value="{{component.componentName}}" name="component.name">
 
-    <p>two way binding with non polymer element (oninput event):</p>
+    <p>two way binding with input element (oninput event):</p>
     <input type="text"  value="{{component.counter::input}}" name="component.counter1">
-    <p>one way model to host with non polymer element:</p>
+    <p>one way model to host with input element element:</p>
     <input type="text"  value="[[component.counter]]" name="component.counter2">
 
   </template>
 
   <script>
 
-    import { getCurrent } from '../js/service';
+    //import { getCurrent } from '../js/service';
 
     /**
      * `web-component`
@@ -135,7 +154,7 @@
         super.connectedCallback();
         this.removeAttribute("showComponentWhenConnected");
 
-        getCurrent();
+        //getCurrent();
 
         console.log(this.shadowRoot);
 

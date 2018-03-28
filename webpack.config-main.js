@@ -4,6 +4,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const packageJSON = require("./package.json");
 const jsonValidator = require("./util/json-validator");
+const ExtractCssChunks = require("extract-css-chunks-webpack-plugin")
 
 const inlineSassTranspilerSchema = require("./util/loaders/inline-sass-transpiler/inline-sass-transpiler").optionsSchema;
 
@@ -96,9 +97,9 @@ module.exports = function(options) {
           // Chained loaders run last to first.
           use: [
             { loader: "babel-loader", options: { presets: ["env"], compact: true }},
-            { loader: "polymer-webpack-loader", options: {} },
+            { loader: "polymer-webpack-loader", options: { processStyleLinks: true } },
             { loader: "inline-sass-transpiler", options: options.inlineSassTranspilerOptions },
-            { loader: "linked-style-bundler-loader", options: options.linkedStyleBundlerLoaderOptions }
+            // { loader: "linked-style-bundler-loader", options: options.linkedStyleBundlerLoaderOptions }
           ],
           // Exclude starting point of bundle
           exclude: /src\/html\/index\.html$/,
@@ -117,23 +118,43 @@ module.exports = function(options) {
         {
           // all files that end in .css
           test: /\.css$/,
-          use: ExtractTextPlugin.extract({
-            use: [
-              { loader: "css-loader", options: { }},
-            ]
-          })
-        },
-
-        {
-          test: /\.scss$/,
-          use:
-            ExtractTextPlugin.extract({
+            use: ExtractCssChunks.extract({
               use: [
-                { loader: "css-loader", options: { url: false, minimize: false }},
-                { loader: "sass-loader", options: {}},
+                // { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}},
+                //  { loader: "extract-loader", options: { publicPath: options.publicPath }},
+                { loader: "css-loader", options: { import: true, url: true }},
               ]
             })
         },
+
+        // {
+        //   // all files that end in .css
+        //   test: /\.css$/,
+        //   use: ExtractTextPlugin.extract({
+        //     use: [
+        //       { loader: "css-loader", options: { }},
+        //     ]
+        //   })
+        // },
+
+        {
+          test: /\.scss$/,
+          use: [
+            { loader: "css-loader", options: { url: false, minimize: false }},
+            { loader: "sass-loader", options: {}},
+          ]
+        },
+
+        // {
+        //   test: /\.scss$/,
+        //   use:
+        //     ExtractTextPlugin.extract({
+        //       use: [
+        //         { loader: "css-loader", options: { url: false, minimize: false }},
+        //         { loader: "sass-loader", options: {}},
+        //       ]
+        //     })
+        // },
 
         {
           test: new RegExp("\\.(" + options.resourceCopyOptions.extensions + ")$"),
@@ -156,6 +177,7 @@ module.exports = function(options) {
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
       new ExtractTextPlugin({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath, allChunks: true }),
+      new ExtractCssChunks({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath }),
       // creates a bundle content report
       new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false, reportFilename: "bundle-content-report.html" }),
     ],
