@@ -11,6 +11,11 @@
     color: green;
     @import "test";
   }
+
+  .localScss:after {
+    content: " [:after from from 'outside' css]";
+  }
+
 </style>
 
 <link rel="stylesheet" type="text/css" href="../css/test.css"/>
@@ -30,36 +35,21 @@
         border: 1px solid black;
         padding-left: 70px;
       }
-    </style>
 
-    <style>
+      .localScss:after {
+        content: " [:after from from 'inside' css]";
+      }
 
       @keyframes fade-in {
-        0% {
-          opacity: 0
-        }
-        100% {
-          opacity: 1
-        }
+        0%   { opacity: 0 }
+        100% { opacity: 1 }
       }
 
       @keyframes moveText {
-        0% {
-          left: 0px;
-          top: 0px;
-        }
-        25% {
-          left: 100px;
-          top: 50px;
-        }
-        75% {
-          left: 100px;
-          top: -0px;
-        }
-        100% {
-          left: 0px;
-          top: 0px;
-        }
+        0%   { left: 0px; top: 0px; }
+        25%  { left: 100px; top: 50px; }
+        75%  { left: 100px; top: -0px; }
+        100% { left: 0px; top: 0px; }
       }
 
       h3 {
