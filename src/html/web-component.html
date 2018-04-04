@@ -18,11 +18,10 @@
 
 </style>
 
-<link rel="stylesheet" type="text/css" href="../css/test.css"/>
-<link rel="stylesheet" type="text/css" href="../scss/test.scss"/>
-
-
 <dom-module id="web-component">
+
+  <link rel="import" type="text/css" href="../css/test.css"/>
+
   <template>
 
     <!-- inside web-component dom-module -->
@@ -89,7 +88,7 @@
     <br>
 
     slots:
-    <p>
+    <p class="fromTestCss">
       title:
       <slot name="title"></slot>
     </p>

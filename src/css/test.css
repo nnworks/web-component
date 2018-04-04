@@ -1,5 +1,10 @@
 @import "nested/nested.css";
 
-.shifted-main {
+.fromTestCss {
   background-color: #4d4d4d;
-  color: red; }
+  color: red;
+}
+
+.fromTestCss:after {
+  content: " [:after from test.css]";
+}
