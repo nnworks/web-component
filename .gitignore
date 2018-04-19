@@ -1,8 +1,0 @@
-/.DS_Store
-/.idea
-/.yarnclean
-/bower_components/
-/node_modules/
-/yarn-error.log
-/dist/
-/package-lock.json

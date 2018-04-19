@@ -1,12 +1,10 @@
 const path = require("path");
 const GeneratePackageJsonPlugin = require("generate-package-json-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const packageJSON = require("./package.json");
-const jsonValidator = require("./util/json-validator");
-const ExtractCssChunks = require("extract-css-chunks-webpack-plugin")
-
-const inlineSassTranspilerSchema = require("./util/loaders/inline-sass-transpiler/inline-sass-transpiler").optionsSchema;
+// const jsonValidator = require("./util/json-validator");
+// const ExtractCssChunks = require("extract-css-chunks-webpack-plugin")
 
 
 const optionsSchema = {
@@ -35,8 +33,6 @@ const optionsSchema = {
       type: "string"
     },
 
-    scssBasePaths: inlineSassTranspilerSchema,
-
     resourceCopyOptions: {
       description: "settings for copying the resources referred to in the processed files",
       type: "object",
@@ -59,7 +55,7 @@ const optionsSchema = {
  */
 module.exports = function(options) {
 
-  jsonValidator.validate(options, optionsSchema, "Main Configuration").throwOnError();
+//  jsonValidator.validate(options, optionsSchema, "Main Configuration").throwOnError();
 
   var config = {
     stats: "normal",
@@ -82,7 +78,6 @@ module.exports = function(options) {
     resolveLoader: {
       modules: [
         "node_modules",
-        path.resolve(__dirname, "util/loaders/inline-sass-transpiler"),
         path.resolve(__dirname, "util/loaders/linked-style-bundler-loader"),
         path.resolve(__dirname, "util/loaders")
       ]
@@ -92,40 +87,26 @@ module.exports = function(options) {
     module: {
       rules: [
         {
-          // If you see a file that ends in .html, send it to these loaders.
-          test: /\.html$/,
-          // Chained loaders run last to first.
-          use: [
-            { loader: "babel-loader", options: { presets: ["env"], compact: true }},
-            { loader: "polymer-webpack-loader", options: { processStyleLinks: true } },
-            { loader: "inline-sass-transpiler", options: options.inlineSassTranspilerOptions },
-            // { loader: "linked-style-bundler-loader", options: options.linkedStyleBundlerLoaderOptions }
-          ],
-          // Exclude starting point of bundle
-          exclude: /src\/html\/index\.html$/,
-        },
-
-        {
           // all files that end in .js
           test: /\.js$/,
           use: [
-            { loader: "babel-loader", options: { presets: ["babel-preset-env"], plugins: ["babel-plugin-transform-runtime"], compact: true }}
+            { loader: "babel-loader", options: { presets: ["env"], compact: false } }
           ],
           // Exclude bower_components and node_modules from transpilation except for polymer-webpack-loader:
-          exclude: /node_modules\/(?!polymer-webpack-loader\/)|\/bower_components\/.*/
+          //exclude: /node_modules\/(?!polymer-webpack-loader\/)|\/bower_components\/.*/
         },
 
-        {
-          // all files that end in .css
-          test: /\.css$/,
-            use: ExtractCssChunks.extract({
-              use: [
-                // { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}},
-                //  { loader: "extract-loader", options: { publicPath: options.publicPath }},
-                { loader: "css-loader", options: { import: true, url: true }},
-              ]
-            })
-        },
+        // {
+        //   // all files that end in .css
+        //   test: /\.css$/,
+        //     use: ExtractCssChunks.extract({
+        //       use: [
+        //         // { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}},
+        //         //  { loader: "extract-loader", options: { publicPath: options.publicPath }},
+        //         { loader: "css-loader", options: { import: true, url: true }},
+        //       ]
+        //     })
+        // },
 
         // {
         //   // all files that end in .css
@@ -137,13 +118,13 @@ module.exports = function(options) {
         //   })
         // },
 
-        {
-          test: /\.scss$/,
-          use: [
-            { loader: "css-loader", options: { url: false, minimize: false }},
-            { loader: "sass-loader", options: {}},
-          ]
-        },
+        // {
+        //   test: /\.scss$/,
+        //   use: [
+        //     { loader: "css-loader", options: { url: false, minimize: false }},
+        //     { loader: "sass-loader", options: {}},
+        //   ]
+        // },
 
         // {
         //   test: /\.scss$/,
@@ -156,12 +137,12 @@ module.exports = function(options) {
         //     })
         // },
 
-        {
-          test: new RegExp("\\.(" + options.resourceCopyOptions.extensions + ")$"),
-          use: [
-            { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}}
-          ]
-        }
+        // {
+        //   test: new RegExp("\\.(" + options.resourceCopyOptions.extensions + ")$"),
+        //   use: [
+        //     { loader: "file-loader", options: {name: "[path][name].[ext]", useRelativePath: false}}
+        //   ]
+        // }
       ]
     },
 
@@ -176,15 +157,15 @@ module.exports = function(options) {
         "license": packageJSON.license,
         "engines": packageJSON.engines,
       }, __dirname + "/package.json"),
-      new ExtractTextPlugin({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath, allChunks: true }),
-      new ExtractCssChunks({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath }),
+      // new ExtractTextPlugin({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath, allChunks: true }),
+      // new ExtractCssChunks({ filename: options.linkedStyleBundlerLoaderOptions.cssBundlePath }),
       // creates a bundle content report
       new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false, reportFilename: "bundle-content-report.html" }),
     ],
 
     // Will be put in the modules dist folder package.json if the generate-package-json-webpack-plugin is used
     externals: {
-      axios: "axios",
+
     },
 
     devServer: {
