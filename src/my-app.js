@@ -10,7 +10,8 @@ export class MyApp extends PolymerElement {
   static get template() {
     return `
        <div>
-         This is my [[name]] app.
+         This is my [[name]] app.<br/>
+         Edit text: <input type="text" value="{{name::input}}">
        </div>
     `;
   }
