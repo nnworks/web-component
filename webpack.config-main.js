@@ -96,6 +96,16 @@ module.exports = function(options) {
           //exclude: /node_modules\/(?!polymer-webpack-loader\/)|\/bower_components\/.*/
         },
 
+        {
+          test: /\.html$/,
+          use: [ {
+            loader: 'html-loader',
+            options: {
+              minimize: true
+            }
+          }]
+        },
+
         // {
         //   // all files that end in .css
         //   test: /\.css$/,
