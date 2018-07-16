@@ -179,7 +179,7 @@ module.exports = function(options) {
     },
 
     devServer: {
-      contentBase: path.join(__dirname, "./"),
+      contentBase: path.resolve(__dirname, "./"),
       compress: true,
       port: 9000
     },
